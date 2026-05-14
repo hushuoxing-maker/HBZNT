@@ -493,19 +493,19 @@
             <p class="subtitle">国际级商业视觉标准 · <span>20组</span>完全去重 · 品牌思维驱动</p>
         </div>
 
-        <!-- 输入区 -->
+        <!-- 输入区：海报需求 + 主标题文字 -->
         <div class="main-card">
-            <div class="section-title"><span class="icon-dot"></span>📝 基础信息输入</div>
+            <div class="section-title"><span class="icon-dot"></span>📝 核心信息输入</div>
             <div class="input-row">
                 <div class="input-group">
-                    <label for="topicInput">🎯 主题/产品名称 <span class="req">*</span></label>
-                    <input id="topicInput" type="text" placeholder="例如：烤鱼、AI芯片、春季课程、豪宅..." value="烤鱼">
-                    <span class="input-hint">⚠️ 原样保留，不做任何修改</span>
+                    <label for="topicInput">🎯 海报需求 <span class="req">*</span></label>
+                    <input id="topicInput" type="text" placeholder="例如：烤鱼促销海报、AI产品展示、春季招生海报..." value="烤鱼">
+                    <span class="input-hint">⚠️ 描述您的海报需求，此内容将原样保留</span>
                 </div>
                 <div class="input-group">
-                    <label for="brandInput">🏪 品牌/机构名（可选）</label>
-                    <input id="brandInput" type="text" placeholder="例如：老街烤鱼馆" value="老街烤鱼馆">
-                    <span class="input-hint">⚠️ 原样保留，不做任何修改</span>
+                    <label for="brandInput">📝 主标题文字（可选）</label>
+                    <input id="brandInput" type="text" placeholder="例如：老街烤鱼馆、限时特惠、新品首发..." value="老街烤鱼馆">
+                    <span class="input-hint">⚠️ 海报主标题，此内容将原样保留</span>
                 </div>
             </div>
             <div class="input-row" style="margin-top:8px;">
@@ -513,7 +513,7 @@
                     <label for="extraInput">📋 额外信息（可选）</label>
                     <textarea id="extraInput" placeholder="例如：周年庆特惠、限量发售、扫码咨询等">🔥 周年庆特惠 · 全场8折
                         📍 地址：美食街88号 · 营业至凌晨2点</textarea>
-                    <span class="input-hint">⚠️ 原样保留，不做任何修改</span>
+                    <span class="input-hint">⚠️ 此内容将原样保留，不做任何修改</span>
                 </div>
             </div>
         </div>
@@ -664,10 +664,10 @@
             </button>
         </div>
 
-        <div class="stats-bar" id="statsBar">👆 选择条件（或直接使用默认），点击按钮生成提示词</div>
+        <div class="stats-bar" id="statsBar">👆 输入海报需求，选择条件，点击按钮生成提示词</div>
 
         <div class="results-grid" id="resultsBox">
-            <div class="empty-state">👆 输入主题信息，选择条件，点击按钮生成20组不重复提示词</div>
+            <div class="empty-state">👆 输入海报需求与主标题，选择条件，点击按钮生成20组不重复提示词</div>
         </div>
     </div>
 
@@ -757,7 +757,8 @@
                 return Array.from(btns).map(b => b.getAttribute('data-val'));
             }
 
-            function generateUniqueCombinations(selectedPosterTypes, selectedStyles, selectedColors, selectedUsers) {
+            function generateUniqueCombinations(selectedPosterTypes, selectedStyles, selectedColors,
+            selectedUsers) {
                 const posterTypes = selectedPosterTypes.length > 0 ? selectedPosterTypes : ALL_POSTER_TYPES;
                 const styles = selectedStyles.length > 0 ? selectedStyles : ALL_STYLE_TYPES;
                 const colors = selectedColors.length > 0 ? selectedColors : ALL_COLOR_MATCHES;
@@ -792,7 +793,8 @@
                         xhsTrend: pickRandom(shuffledXhs),
                         dyTrend: pickRandom(shuffledDy),
                     };
-                    const key = `${combo.posterType}|${combo.style}|${combo.color}|${combo.targetUser}|${combo.layout}|${combo.mood}|${combo.lighting}|${combo.marketing}|${combo.trend2026}|${combo.xhsTrend}|${combo.dyTrend}`;
+                    const key =
+                        `${combo.posterType}|${combo.style}|${combo.color}|${combo.targetUser}|${combo.layout}|${combo.mood}|${combo.lighting}|${combo.marketing}|${combo.trend2026}|${combo.xhsTrend}|${combo.dyTrend}`;
                     if (!usedKeys.has(key)) {
                         usedKeys.add(key);
                         combinations.push(combo);
@@ -801,16 +803,16 @@
                 return combinations.slice(0, targetCount);
             }
 
-            function buildPromptText(topicName, brandName, extraInfo, combo, index) {
-                const topic = topicName;
-                const brand = brandName;
-                const extra = extraInfo;
+            function buildPromptText(postRequest, mainTitle, extraInfo, combo, index) {
+                const request = postRequest; // 海报需求 · 原样保留
+                const title = mainTitle; // 主标题文字 · 原样保留
+                const extra = extraInfo; // 额外信息 · 原样保留
 
                 let prompt = `【国际商业海报 · 提示词 #${index + 1}】\n\n`;
                 prompt += `━━━━━━━━━━━━━━━━━━━━\n`;
                 prompt += `📌 海报类型：${combo.posterType}\n`;
-                prompt += `🎯 主题主体：高清${topic}商业级视觉呈现`;
-                if (brand) prompt += ` · ${brand}出品`;
+                prompt += `🎯 海报需求：${request}`;
+                if (title) prompt += `\n📝 主标题文字：${title}`;
                 prompt += `\n`;
                 prompt += `👤 目标用户：${combo.targetUser}\n`;
                 prompt += `🎨 视觉风格：${combo.style}\n`;
@@ -823,7 +825,7 @@
                 prompt += `📕 小红书趋势：${combo.xhsTrend}\n`;
                 prompt += `🎵 抖音爆款趋势：${combo.dyTrend}\n`;
                 if (extra) {
-                    prompt += `📋 附加信息：${extra}\n`;
+                    prompt += `📋 额外信息：${extra}\n`;
                 }
                 prompt += `\n`;
                 prompt += `【国际级商业视觉标准】\n`;
@@ -847,12 +849,12 @@
                 const statsBar = document.getElementById('statsBar');
                 const generateBtn = document.getElementById('generateBtn');
 
-                const topicName = topicInput.value.trim();
-                const brandName = brandInput.value.trim();
-                const extraInfo = extraInput.value.trim();
+                const postRequest = topicInput.value.trim(); // 海报需求
+                const mainTitle = brandInput.value.trim(); // 主标题文字
+                const extraInfo = extraInput.value.trim(); // 额外信息
 
-                if (!topicName) {
-                    alert('⚠️ 请输入主题/产品名称（必填）');
+                if (!postRequest) {
+                    alert('⚠️ 请输入海报需求（必填）');
                     topicInput.focus();
                     return;
                 }
@@ -871,15 +873,15 @@
                         const combinations = generateUniqueCombinations(selectedPosterTypes,
                             selectedStyles, selectedColors, selectedUsers);
                         const prompts = combinations.map((combo, i) =>
-                            buildPromptText(topicName, brandName, extraInfo, combo, i)
+                            buildPromptText(postRequest, mainTitle, extraInfo, combo, i)
                         );
 
                         const uniqueCheck = new Set(prompts);
                         const isAllUnique = uniqueCheck.size === prompts.length;
                         console.log('========== 去重验证报告 ==========');
                         console.log(`✅ 生成数量：${prompts.length}组 | 去重后：${uniqueCheck.size}组 | 状态：${isAllUnique ? '完全去重 ✓' : '已修复 ✓'}`);
-                        console.log(`✅ 主题"${topicName}"原样保留验证：通过`);
-                        if (brandName) console.log(`✅ 品牌"${brandName}"原样保留验证：通过`);
+                        console.log(`✅ 海报需求"${postRequest}"原样保留验证：通过`);
+                        if (mainTitle) console.log(`✅ 主标题"${mainTitle}"原样保留验证：通过`);
                         console.log('===================================');
 
                         let finalPrompts = prompts;
@@ -889,10 +891,10 @@
                             for (const p of prompts) {
                                 if (!seen.has(p)) { seen.add(p);
                                     finalPrompts.push(p); } else {
-                                    const nc = generateUniqueCombinations(selectedPosterTypes, selectedStyles,
-                                        selectedColors, selectedUsers)[0];
-                                    const np = buildPromptText(topicName, brandName, extraInfo, nc, finalPrompts
-                                        .length);
+                                    const nc = generateUniqueCombinations(selectedPosterTypes,
+                                        selectedStyles, selectedColors, selectedUsers)[0];
+                                    const np = buildPromptText(postRequest, mainTitle, extraInfo, nc,
+                                        finalPrompts.length);
                                     if (!seen.has(np)) { seen.add(np);
                                         finalPrompts.push(np); }
                                 }
@@ -900,7 +902,8 @@
                             while (finalPrompts.length < 20) {
                                 const ec = generateUniqueCombinations(selectedPosterTypes, selectedStyles,
                                     selectedColors, selectedUsers)[0];
-                                const ep = buildPromptText(topicName, brandName, extraInfo, ec, finalPrompts.length);
+                                const ep = buildPromptText(postRequest, mainTitle, extraInfo, ec, finalPrompts
+                                    .length);
                                 if (!seen.has(ep)) { seen.add(ep);
                                     finalPrompts.push(ep); }
                             }
@@ -942,7 +945,8 @@
                             resultsBox.appendChild(itemDiv);
                         });
 
-                        const selPT = selectedPosterTypes.length > 0 ? selectedPosterTypes.join('、') : '全部类型';
+                        const selPT = selectedPosterTypes.length > 0 ? selectedPosterTypes.join('、') :
+                            '全部类型';
                         const selST = selectedStyles.length > 0 ? selectedStyles.join('、') : '全部风格';
                         const selCL = selectedColors.length > 0 ? selectedColors.join('、') : '全部配色';
                         const selUS = selectedUsers.length > 0 ? selectedUsers.join('、') : '全部用户';
@@ -950,7 +954,7 @@
                             ✅ 成功生成 <strong>${finalPrompts.length}</strong> 组国际级商业海报提示词 | 
                             类型：<strong>${selPT}</strong> | 风格：<strong>${selST}</strong> | 
                             配色：<strong>${selCL}</strong> | 用户：<strong>${selUS}</strong> | 
-                            主题"<strong>${topicName}</strong>"原样保留
+                            海报需求"<strong>${postRequest}</strong>"原样保留
                         `;
                     } catch (error) {
                         console.error('生成出错：', error);
