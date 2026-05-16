@@ -6,23 +6,26 @@
     <title>国际商业海报提示词生成器 · 古月AI智能体</title>
     <style>
         :root {
-            --bg-deep: #080c14;
-            --bg-card: rgba(12, 16, 28, 0.85);
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-active: rgba(255, 140, 30, 0.6);
+            --bg-deep: #060a10;
+            --bg-card: rgba(10, 14, 24, 0.88);
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-active: rgba(255, 140, 30, 0.55);
             --accent: #ff6a00;
             --accent2: #ee0979;
             --gold: #d4a853;
-            --text-primary: #e8ecf2;
-            --text-secondary: #94a3b8;
-            --text-hint: #5c6a7d;
-            --radius-lg: 18px;
-            --radius-md: 10px;
-            --radius-sm: 7px;
-            --shadow-glow: 0 0 28px rgba(255, 106, 0, 0.25);
-            --shadow-card: 0 6px 32px rgba(0, 0, 0, 0.5);
-            --transition-fast: 0.18s ease;
-            --transition-smooth: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            --text-primary: #e6eaf2;
+            --text-secondary: #8b9bb5;
+            --text-hint: #54637a;
+            --radius-lg: 16px;
+            --radius-md: 9px;
+            --radius-sm: 6px;
+            --shadow-glow: 0 0 24px rgba(255, 106, 0, 0.22);
+            --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.5);
+            --transition-fast: 0.16s ease;
+            --transition-smooth: 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+            --scrollbar-width: 6px;
+            --scrollbar-track: rgba(255, 255, 255, 0.03);
+            --scrollbar-thumb: rgba(255, 106, 0, 0.35);
         }
 
         * {
@@ -30,90 +33,83 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
             background: var(--bg-deep);
             min-height: 100vh;
             color: var(--text-primary);
-            padding: 24px 16px 40px;
+            padding: 20px 14px 44px;
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(ellipse at 15% 18%, rgba(255, 106, 0, 0.09) 0%, transparent 55%),
-                radial-gradient(ellipse at 78% 72%, rgba(238, 9, 121, 0.07) 0%, transparent 55%),
-                radial-gradient(ellipse at 50% 50%, rgba(100, 140, 220, 0.04) 0%, transparent 70%);
+                radial-gradient(ellipse at 12% 16%, rgba(255, 106, 0, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 74%, rgba(238, 9, 121, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(80, 120, 200, 0.03) 0%, transparent 65%);
             pointer-events: none;
             z-index: 0;
         }
         body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.4' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") repeat;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='50' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='25' cy='25' r='0.35' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") repeat;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.6;
+            opacity: 0.5;
         }
-
         .container {
-            max-width: 1340px;
+            max-width: 1400px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
-
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .header .logo-line {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 30px;
-            padding: 6px 18px;
-            font-size: 0.78rem;
-            color: #94a3b8;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 28px;
+            padding: 5px 16px;
+            font-size: 0.74rem;
+            color: #8b9bb5;
             letter-spacing: 1.5px;
-            margin-bottom: 10px;
-            backdrop-filter: blur(6px);
+            margin-bottom: 8px;
+            backdrop-filter: blur(5px);
         }
         .header .logo-line .dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
+            box-shadow: 0 0 9px var(--accent);
         }
         h1 {
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #ff8c3a 0%, #ff6a00 25%, #ee0979 55%, #c44569 100%);
+            letter-spacing: 1.4px;
+            background: linear-gradient(135deg, #ff8c3a 0%, #ff6a00 24%, #ee0979 56%, #c44569 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            filter: drop-shadow(0 2px 10px rgba(255, 106, 0, 0.35));
-            margin-bottom: 4px;
+            filter: drop-shadow(0 2px 8px rgba(255, 106, 0, 0.32));
+            margin-bottom: 3px;
             line-height: 1.3;
         }
         .subtitle {
-            font-size: 0.85rem;
-            color: #64748b;
-            letter-spacing: 1px;
+            font-size: 0.82rem;
+            color: #54637a;
+            letter-spacing: 0.9px;
         }
         .subtitle span {
             color: var(--gold);
@@ -122,124 +118,175 @@
 
         .main-card {
             background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            padding: 22px 24px;
-            margin-bottom: 18px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
             box-shadow: var(--shadow-card);
             transition: var(--transition-smooth);
         }
         .main-card:hover {
-            border-color: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .section-title {
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            color: #cbd5e1;
-            margin-bottom: 10px;
+        .collapse-toggle {
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            text-transform: uppercase;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #bcc8dd;
+            user-select: none;
+            transition: color var(--transition-fast);
+            padding: 2px 0;
         }
-        .section-title .icon-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
+        .collapse-toggle:hover {
+            color: #fff;
         }
-        .section-title .badge-count {
-            font-size: 0.7rem;
-            background: rgba(255, 106, 0, 0.18);
+        .collapse-toggle .arrow-icon {
+            font-size: 0.75rem;
+            transition: transform var(--transition-fast);
+            display: inline-block;
+            color: var(--accent);
+            margin-right: 2px;
+        }
+        .collapse-toggle.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+        .collapse-toggle .badge-count {
+            font-size: 0.68rem;
+            background: rgba(255, 106, 0, 0.16);
             color: #ff944d;
-            padding: 2px 10px;
-            border-radius: 12px;
+            padding: 2px 9px;
+            border-radius: 11px;
             font-weight: 400;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             margin-left: auto;
         }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-            margin-bottom: 6px;
+        .collapse-toggle .scroll-hint {
+            font-size: 0.6rem;
+            color: #54637a;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 7px;
+            border-radius: 8px;
+            letter-spacing: 0.3px;
+            margin-left: 6px;
         }
-        .btn-group .tag-btn {
-            padding: 7px 14px;
-            border-radius: 20px;
-            border: 1.5px solid rgba(255, 255, 255, 0.14);
-            background: rgba(255, 255, 255, 0.025);
-            color: #b0b8c4;
+
+        .collapse-content {
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.2s ease;
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+        }
+        .collapse-content.expanded {
+            max-height: 1200px;
+            opacity: 1;
+            margin-top: 10px;
+        }
+
+        .scrollable-btn-area {
+            max-height: 320px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
+            scroll-behavior: smooth;
+        }
+        .scrollable-btn-area::-webkit-scrollbar {
+            width: var(--scrollbar-width);
+        }
+        .scrollable-btn-area::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 10px;
+        }
+        .scrollable-btn-area::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+            transition: background var(--transition-fast);
+        }
+        .scrollable-btn-area::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 140, 60, 0.6);
+        }
+        .scrollable-btn-area {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 5px;
+        }
+        .btn-grid .tag-btn {
+            padding: 5px 9px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.02);
+            color: #a8b6cc;
             cursor: pointer;
-            font-size: 0.78rem;
-            letter-spacing: 0.4px;
+            font-size: 0.72rem;
+            letter-spacing: 0.3px;
             transition: all var(--transition-fast);
             white-space: nowrap;
             font-family: inherit;
             user-select: none;
+            text-align: center;
             position: relative;
-            overflow: hidden;
         }
         .tag-btn:hover {
-            border-color: rgba(255, 140, 60, 0.5);
-            background: rgba(255, 106, 0, 0.08);
-            color: #e8ecf2;
+            border-color: rgba(255, 140, 60, 0.45);
+            background: rgba(255, 106, 0, 0.07);
+            color: #e0e6f2;
             transform: translateY(-1px);
-            box-shadow: 0 3px 12px rgba(255, 106, 0, 0.12);
+            box-shadow: 0 2px 10px rgba(255, 106, 0, 0.1);
         }
         .tag-btn.selected {
             border-color: var(--accent);
-            background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(238, 9, 121, 0.15));
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.18), rgba(238, 9, 121, 0.13));
             color: #fff;
             font-weight: 600;
-            box-shadow: 0 0 18px rgba(255, 106, 0, 0.3);
-            letter-spacing: 0.6px;
+            box-shadow: 0 0 16px rgba(255, 106, 0, 0.26);
+            letter-spacing: 0.5px;
         }
         .tag-btn.selected::after {
-            content: '✓';
-            margin-left: 4px;
-            font-size: 0.7rem;
-            opacity: 0.9;
+            content: ' ✓';
+            font-size: 0.6rem;
+            opacity: 0.85;
         }
 
         .input-row {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
             align-items: flex-end;
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             flex: 1;
-            min-width: 180px;
+            min-width: 170px;
         }
         .input-group label {
-            font-size: 0.8rem;
-            color: #cbd5e1;
+            font-size: 0.78rem;
+            color: #bcc8dd;
             font-weight: 500;
-            letter-spacing: 0.4px;
-        }
-        .input-group label .req {
-            color: var(--accent);
-            margin-left: 2px;
+            letter-spacing: 0.3px;
         }
         input,
         textarea {
-            padding: 11px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.13);
+            padding: 10px 14px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
             border-radius: var(--radius-md);
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(0, 0, 0, 0.42);
             color: #fff;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             transition: all var(--transition-fast);
             outline: none;
             font-family: inherit;
@@ -248,40 +295,40 @@
         }
         textarea {
             resize: vertical;
-            min-height: 70px;
+            min-height: 62px;
         }
         input:focus,
         textarea:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 18px rgba(255, 106, 0, 0.25);
-            background: rgba(0, 0, 0, 0.65);
+            box-shadow: 0 0 16px rgba(255, 106, 0, 0.22);
+            background: rgba(0, 0, 0, 0.6);
         }
         input::placeholder,
         textarea::placeholder {
-            color: #4a5568;
+            color: #3d4a5e;
         }
         .input-hint {
-            font-size: 0.68rem;
-            color: #4a5568;
-            margin-top: 2px;
+            font-size: 0.66rem;
+            color: #3d4a5e;
+            margin-top: 1px;
         }
 
         .generate-btn-wrap {
             text-align: center;
-            margin: 18px 0;
+            margin: 14px 0;
         }
         .generate-btn {
-            padding: 15px 44px;
+            padding: 13px 40px;
             border: none;
-            border-radius: 30px;
+            border-radius: 28px;
             background: linear-gradient(135deg, #ff6a00, #ee0979);
             color: #fff;
             cursor: pointer;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.3px;
             transition: all var(--transition-smooth);
-            box-shadow: 0 6px 28px rgba(255, 106, 0, 0.45);
+            box-shadow: 0 5px 24px rgba(255, 106, 0, 0.4);
             font-family: inherit;
             white-space: nowrap;
             position: relative;
@@ -291,35 +338,33 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent);
             pointer-events: none;
         }
         .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 35px rgba(238, 9, 121, 0.55);
-            letter-spacing: 2px;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(238, 9, 121, 0.5);
+            letter-spacing: 1.8px;
         }
         .generate-btn:active {
             transform: translateY(0);
-            box-shadow: 0 4px 20px rgba(255, 106, 0, 0.4);
         }
         .generate-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.45;
             cursor: not-allowed;
             transform: none;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.3px;
         }
 
         .stats-bar {
             text-align: center;
-            padding: 12px 18px;
-            background: rgba(0, 0, 0, 0.35);
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.32);
             border-radius: var(--radius-md);
-            color: #94a3b8;
-            font-size: 0.8rem;
-            margin-bottom: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            letter-spacing: 0.3px;
+            color: #8b9bb5;
+            font-size: 0.78rem;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .stats-bar strong {
             color: #ff944d;
@@ -328,140 +373,102 @@
 
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 12px;
         }
         .item {
-            background: rgba(14, 18, 30, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(12, 16, 26, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: var(--radius-md);
-            padding: 18px 20px;
-            line-height: 1.7;
+            padding: 16px 18px;
+            line-height: 1.65;
             transition: all var(--transition-smooth);
             display: flex;
             flex-direction: column;
-            position: relative;
         }
         .item:hover {
-            border-color: rgba(255, 140, 60, 0.45);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55), 0 0 22px rgba(255, 106, 0, 0.1);
-            transform: translateY(-3px);
-            background: rgba(16, 20, 34, 0.9);
+            border-color: rgba(255, 140, 60, 0.4);
+            box-shadow: 0 6px 26px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 106, 0, 0.08);
+            transform: translateY(-2px);
+            background: rgba(14, 18, 30, 0.9);
         }
         .item-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
         .item-number {
             background: linear-gradient(135deg, #ff6a00, #ee0979);
             color: #fff;
-            width: 34px;
-            height: 34px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             flex-shrink: 0;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
         }
         .unique-badge {
-            background: rgba(212, 168, 83, 0.15);
+            background: rgba(212, 168, 83, 0.14);
             color: #d4a853;
-            font-size: 0.68rem;
-            padding: 3px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
+            font-size: 0.66rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            letter-spacing: 0.4px;
             font-weight: 500;
         }
         .prompt-text {
-            font-size: 0.83rem;
-            color: #dde4f0;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            color: #dce3f0;
+            margin-bottom: 8px;
             word-break: break-word;
             flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.28);
+            padding: 10px;
+            border-radius: 7px;
             border-left: 3px solid var(--accent);
-            line-height: 1.8;
+            line-height: 1.75;
             white-space: pre-wrap;
         }
         .copy-btn {
             align-self: flex-start;
-            padding: 8px 18px;
+            padding: 7px 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 7px;
             background: linear-gradient(135deg, #ee0979, #ff6a00);
             color: #fff;
             cursor: pointer;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             transition: all var(--transition-fast);
             font-family: inherit;
-            box-shadow: 0 2px 10px rgba(238, 9, 121, 0.3);
+            box-shadow: 0 2px 8px rgba(238, 9, 121, 0.28);
         }
         .copy-btn:hover {
-            transform: scale(1.04);
-            box-shadow: 0 4px 16px rgba(238, 9, 121, 0.5);
+            transform: scale(1.03);
+            box-shadow: 0 3px 14px rgba(238, 9, 121, 0.45);
         }
         .copy-btn.copied {
-            background: #3b4a5e;
+            background: #35404f;
             box-shadow: none;
         }
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
-            color: #4a5568;
-            font-size: 1rem;
+            padding: 44px 18px;
+            color: #3d4a5e;
+            font-size: 0.95rem;
             grid-column: 1 / -1;
-            letter-spacing: 0.5px;
         }
 
-        .collapse-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #cbd5e1;
-            padding: 8px 0;
-            user-select: none;
-            transition: color var(--transition-fast);
-        }
-        .collapse-toggle:hover {
-            color: #fff;
-        }
-        .collapse-toggle .arrow {
-            transition: transform var(--transition-fast);
-            font-size: 0.7rem;
-            display: inline-block;
-        }
-        .collapse-toggle.open .arrow {
-            transform: rotate(90deg);
-        }
-        .collapse-content {
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            max-height: 0;
-            opacity: 0;
-        }
-        .collapse-content.expanded {
-            max-height: 800px;
-            opacity: 1;
-        }
-
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
             .input-row {
                 flex-direction: column;
@@ -471,16 +478,22 @@
             }
             .generate-btn {
                 width: 100%;
-                padding: 14px 20px;
-                font-size: 1rem;
+                padding: 12px 18px;
+                font-size: 0.95rem;
+            }
+            .btn-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             }
             .tag-btn {
-                font-size: 0.72rem;
-                padding: 6px 11px;
-                border-radius: 16px;
+                font-size: 0.68rem;
+                padding: 4px 7px;
+                border-radius: 12px;
             }
             .main-card {
-                padding: 16px 14px;
+                padding: 12px 10px;
+            }
+            .scrollable-btn-area {
+                max-height: 260px;
             }
         }
     </style>
@@ -490,505 +503,287 @@
         <div class="header">
             <div class="logo-line"><span class="dot"></span> 古月AI智能体 <span class="dot"></span></div>
             <h1>🌐 国际商业海报提示词生成器</h1>
-            <p class="subtitle">国际级商业视觉标准 · <span>20组</span>完全去重 · 品牌思维驱动</p>
+            <p class="subtitle">国际级商业视觉标准 · <span>20组</span>完全去重 · 按需输出</p>
         </div>
 
-        <!-- 输入区：海报需求 + 主标题文字 -->
+        <!-- 输入区 -->
         <div class="main-card">
-            <div class="section-title"><span class="icon-dot"></span>📝 核心信息输入</div>
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="topicInput">🎯 海报需求 <span class="req">*</span></label>
-                    <input id="topicInput" type="text" placeholder="例如：烤鱼促销海报、AI产品展示、春季招生海报..." value="烤鱼">
-                    <span class="input-hint">⚠️ 描述您的海报需求，此内容将原样保留</span>
-                </div>
-                <div class="input-group">
-                    <label for="brandInput">📝 主标题文字（可选）</label>
-                    <input id="brandInput" type="text" placeholder="例如：老街烤鱼馆、限时特惠、新品首发..." value="老街烤鱼馆">
-                    <span class="input-hint">⚠️ 海报主标题，此内容将原样保留</span>
-                </div>
+            <div class="collapse-toggle" style="cursor:default; color:#bcc8dd; padding:0;">
+                <span style="color:var(--accent);">📝</span> 核心信息输入 (海报需求、标题等将原样保留)
             </div>
             <div class="input-row" style="margin-top:8px;">
                 <div class="input-group">
-                    <label for="extraInput">📋 额外信息（可选）</label>
+                    <label for="topicInput">🎯 海报需求</label>
+                    <input id="topicInput" type="text" placeholder="例如：烤鱼促销海报、AI产品展示..." value="烤鱼">
+                    <span class="input-hint">您的需求描述，原样保留</span>
+                </div>
+                <div class="input-group">
+                    <label for="brandInput">📝 主标题文字</label>
+                    <input id="brandInput" type="text" placeholder="例如：老街烤鱼馆、限时特惠..." value="老街烤鱼馆">
+                    <span class="input-hint">主标题，原样保留</span>
+                </div>
+            </div>
+            <div class="input-row" style="margin-top:6px;">
+                <div class="input-group">
+                    <label for="extraInput">📋 额外信息</label>
                     <textarea id="extraInput" placeholder="例如：周年庆特惠、限量发售、扫码咨询等">🔥 周年庆特惠 · 全场8折
                         📍 地址：美食街88号 · 营业至凌晨2点</textarea>
-                    <span class="input-hint">⚠️ 此内容将原样保留，不做任何修改</span>
+                    <span class="input-hint">原样保留，不填则不输出</span>
                 </div>
             </div>
         </div>
 
-        <!-- 选择区：海报类型 -->
-        <div class="main-card" id="cardPosterType">
-            <div class="collapse-toggle open" data-target="collapsePosterType">
-                <span class="arrow">▶</span> 🎨 海报类型 <span class="badge-count">多选 · 不选则随机</span>
+        <!-- 对称布局 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <!-- 左列 -->
+            <div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapsePosterType">
+                        <span class="arrow-icon">▶</span> 🎨 海报类型
+                        <span class="badge-count">可选</span>
+                        <span class="scroll-hint">🖱️ 滑动查看更多</span>
+                    </div>
+                    <div class="collapse-content" id="collapsePosterType">
+                        <div class="scrollable-btn-area">
+                            <div class="btn-grid" data-group="posterType"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapseFestival">
+                        <span class="arrow-icon">▶</span> 🎊 节日节气 <span class="badge-count">可选</span>
+                    </div>
+                    <div class="collapse-content" id="collapseFestival">
+                        <div class="btn-grid" data-group="festival"></div>
+                    </div>
+                </div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapseMoodAtmo">
+                        <span class="arrow-icon">▶</span> 💫 情绪氛围 <span class="badge-count">可选</span>
+                    </div>
+                    <div class="collapse-content" id="collapseMoodAtmo">
+                        <div class="btn-grid" data-group="moodAtmo"></div>
+                    </div>
+                </div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapseHighEnd">
+                        <span class="arrow-icon">▶</span> 💎 高端商业 <span class="badge-count">可选</span>
+                    </div>
+                    <div class="collapse-content" id="collapseHighEnd">
+                        <div class="btn-grid" data-group="highEnd"></div>
+                    </div>
+                </div>
             </div>
-            <div class="collapse-content expanded" id="collapsePosterType">
-                <div class="btn-group" data-group="posterType">
-                    <button class="tag-btn" data-val="餐饮海报">🍜 餐饮海报</button>
-                    <button class="tag-btn" data-val="AI科技海报">🤖 AI科技海报</button>
-                    <button class="tag-btn" data-val="招生课程海报">📚 招生课程海报</button>
-                    <button class="tag-btn" data-val="企业商务海报">💼 企业商务海报</button>
-                    <button class="tag-btn" data-val="活动促销海报">🎉 活动促销海报</button>
-                    <button class="tag-btn" data-val="招聘海报">👥 招聘海报</button>
-                    <button class="tag-btn" data-val="电商海报">🛒 电商海报</button>
-                    <button class="tag-btn" data-val="美业海报">💄 美业海报</button>
-                    <button class="tag-btn" data-val="房地产海报">🏠 房地产海报</button>
-                    <button class="tag-btn" data-val="自建房海报">🏗️ 自建房海报</button>
-                    <button class="tag-btn" data-val="风水命理海报">🔮 风水命理海报</button>
-                    <button class="tag-btn" data-val="节日节气海报">🎊 节日节气海报</button>
-                    <button class="tag-btn" data-val="短视频封面">📱 短视频封面</button>
-                    <button class="tag-btn" data-val="社群裂变海报">🔗 社群裂变海报</button>
-                    <button class="tag-btn" data-val="数据战报海报">📊 数据战报海报</button>
-                    <button class="tag-btn" data-val="城市文旅海报">🏙️ 城市文旅海报</button>
-                    <button class="tag-btn" data-val="品牌宣传海报">📢 品牌宣传海报</button>
-                    <button class="tag-btn" data-val="产品介绍海报">📦 产品介绍海报</button>
-                    <button class="tag-btn" data-val="会员权益海报">💎 会员权益海报</button>
-                    <button class="tag-btn" data-val="高端极简海报">✨ 高端极简海报</button>
-                    <button class="tag-btn" data-val="国潮海报">🏮 国潮海报</button>
-                    <button class="tag-btn" data-val="拼贴海报">🖼️ 拼贴海报</button>
-                    <button class="tag-btn" data-val="渐变科技海报">🌌 渐变科技海报</button>
-                    <button class="tag-btn" data-val="潮流视觉海报">🔥 潮流视觉海报</button>
-                    <button class="tag-btn" data-val="UI界面风海报">🖥️ UI界面风海报</button>
-                    <button class="tag-btn" data-val="赛博朋克海报">⚡ 赛博朋克海报</button>
-                    <button class="tag-btn" data-val="复古海报">📻 复古海报</button>
-                    <button class="tag-btn" data-val="杂志风海报">📰 杂志风海报</button>
-                    <button class="tag-btn" data-val="直播间宣传海报">📡 直播间宣传海报</button>
+            <!-- 右列 -->
+            <div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapseTargetUser">
+                        <span class="arrow-icon">▶</span> 👤 目标用户 <span class="badge-count">可选</span>
+                    </div>
+                    <div class="collapse-content" id="collapseTargetUser">
+                        <div class="btn-grid" data-group="targetUser"></div>
+                    </div>
+                </div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapseStyleType">
+                        <span class="arrow-icon">▶</span> 🎭 风格类型
+                        <span class="badge-count">可选</span>
+                        <span class="scroll-hint">🖱️ 滑动查看更多</span>
+                    </div>
+                    <div class="collapse-content" id="collapseStyleType">
+                        <div class="scrollable-btn-area">
+                            <div class="btn-grid" data-group="styleType"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-card">
+                    <div class="collapse-toggle" data-target="collapseColorMatch">
+                        <span class="arrow-icon">▶</span> 🎨 颜色匹配 <span class="badge-count">可选</span>
+                    </div>
+                    <div class="collapse-content" id="collapseColorMatch">
+                        <div class="btn-grid" data-group="colorMatch"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 选择区：目标用户 -->
-        <div class="main-card" id="cardTargetUser">
-            <div class="collapse-toggle open" data-target="collapseTargetUser">
-                <span class="arrow">▶</span> 👤 目标用户 <span class="badge-count">多选 · 不选则随机</span>
-            </div>
-            <div class="collapse-content expanded" id="collapseTargetUser">
-                <div class="btn-group" data-group="targetUser">
-                    <button class="tag-btn" data-val="年轻用户">👦 年轻用户</button>
-                    <button class="tag-btn" data-val="女性用户">👩 女性用户</button>
-                    <button class="tag-btn" data-val="高净值用户">💰 高净值用户</button>
-                    <button class="tag-btn" data-val="老板">👔 老板</button>
-                    <button class="tag-btn" data-val="创业者">🚀 创业者</button>
-                    <button class="tag-btn" data-val="学生">🎒 学生</button>
-                    <button class="tag-btn" data-val="宝妈">👶 宝妈</button>
-                    <button class="tag-btn" data-val="餐饮用户">🍽️ 餐饮用户</button>
-                    <button class="tag-btn" data-val="企业客户">🏢 企业客户</button>
-                    <button class="tag-btn" data-val="AI从业者">🧠 AI从业者</button>
-                    <button class="tag-btn" data-val="设计师">🎨 设计师</button>
-                    <button class="tag-btn" data-val="装修客户">🛋️ 装修客户</button>
-                    <button class="tag-btn" data-val="命理客户">☯️ 命理客户</button>
-                    <button class="tag-btn" data-val="短视频用户">📹 短视频用户</button>
-                    <button class="tag-btn" data-val="小红书用户">📕 小红书用户</button>
-                    <button class="tag-btn" data-val="抖音用户">🎵 抖音用户</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 选择区：风格类型 -->
-        <div class="main-card" id="cardStyleType">
-            <div class="collapse-toggle open" data-target="collapseStyleType">
-                <span class="arrow">▶</span> 🎭 风格类型 <span class="badge-count">多选 · 不选则随机</span>
-            </div>
-            <div class="collapse-content expanded" id="collapseStyleType">
-                <div class="btn-group" data-group="styleType">
-                    <button class="tag-btn" data-val="极简风">◻️ 极简风</button>
-                    <button class="tag-btn" data-val="轻奢风">🥂 轻奢风</button>
-                    <button class="tag-btn" data-val="科技风">🔬 科技风</button>
-                    <button class="tag-btn" data-val="高级灰">🪨 高级灰</button>
-                    <button class="tag-btn" data-val="国潮风">🏮 国潮风</button>
-                    <button class="tag-btn" data-val="拼贴风">✂️ 拼贴风</button>
-                    <button class="tag-btn" data-val="渐变风">🌈 渐变风</button>
-                    <button class="tag-btn" data-val="赛博朋克">⚡ 赛博朋克</button>
-                    <button class="tag-btn" data-val="商务风">👔 商务风</button>
-                    <button class="tag-btn" data-val="电商风">🛍️ 电商风</button>
-                    <button class="tag-btn" data-val="杂志风">📰 杂志风</button>
-                    <button class="tag-btn" data-val="INS风">📷 INS风</button>
-                    <button class="tag-btn" data-val="韩系风">🇰🇷 韩系风</button>
-                    <button class="tag-btn" data-val="日系风">🇯🇵 日系风</button>
-                    <button class="tag-btn" data-val="港风">🌆 港风</button>
-                    <button class="tag-btn" data-val="美式复古">🇺🇸 美式复古</button>
-                    <button class="tag-btn" data-val="潮流街头">🛹 潮流街头</button>
-                    <button class="tag-btn" data-val="情绪感">💭 情绪感</button>
-                    <button class="tag-btn" data-val="高端黑金">🖤 高端黑金</button>
-                    <button class="tag-btn" data-val="红金促销">❤️ 红金促销</button>
-                    <button class="tag-btn" data-val="UI科技风">🖥️ UI科技风</button>
-                    <button class="tag-btn" data-val="数据可视化风">📊 数据可视化风</button>
-                    <button class="tag-btn" data-val="粒子光效风">✨ 粒子光效风</button>
-                    <button class="tag-btn" data-val="玻璃拟态风">🪟 玻璃拟态风</button>
-                    <button class="tag-btn" data-val="未来科技风">🚀 未来科技风</button>
-                    <button class="tag-btn" data-val="手写艺术风">✍️ 手写艺术风</button>
-                    <button class="tag-btn" data-val="书法国风">🖌️ 书法国风</button>
-                    <button class="tag-btn" data-val="新中式">🏯 新中式</button>
-                    <button class="tag-btn" data-val="夜市烟火风">🍢 夜市烟火风</button>
-                    <button class="tag-btn" data-val="高端建筑风">🏛️ 高端建筑风</button>
-                    <button class="tag-btn" data-val="豪宅风">🏰 豪宅风</button>
-                    <button class="tag-btn" data-val="AI未来感">🤖 AI未来感</button>
-                    <button class="tag-btn" data-val="爆款短视频封面风">🎬 爆款短视频封面风</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 选择区：颜色匹配 -->
-        <div class="main-card" id="cardColorMatch">
-            <div class="collapse-toggle open" data-target="collapseColorMatch">
-                <span class="arrow">▶</span> 🎨 颜色匹配 <span class="badge-count">多选 · 不选则随机</span>
-            </div>
-            <div class="collapse-content expanded" id="collapseColorMatch">
-                <div class="btn-group" data-group="colorMatch">
-                    <button class="tag-btn" data-val="黑金">🖤 黑金</button>
-                    <button class="tag-btn" data-val="红金">❤️ 红金</button>
-                    <button class="tag-btn" data-val="蓝紫渐变">💜 蓝紫渐变</button>
-                    <button class="tag-btn" data-val="莫兰迪">🎨 莫兰迪</button>
-                    <button class="tag-btn" data-val="奶油色">🧁 奶油色</button>
-                    <button class="tag-btn" data-val="高级灰">🪨 高级灰</button>
-                    <button class="tag-btn" data-val="荧光渐变">💚 荧光渐变</button>
-                    <button class="tag-btn" data-val="科技蓝">🔵 科技蓝</button>
-                    <button class="tag-btn" data-val="中国红">🏮 中国红</button>
-                    <button class="tag-btn" data-val="国潮橙">🍊 国潮橙</button>
-                    <button class="tag-btn" data-val="赛博紫">🟣 赛博紫</button>
-                    <button class="tag-btn" data-val="苹果极简白">⚪ 苹果极简白</button>
-                    <button class="tag-btn" data-val="暗黑高级灰">🌑 暗黑高级灰</button>
-                    <button class="tag-btn" data-val="金属银">🪙 金属银</button>
-                    <button class="tag-btn" data-val="深蓝商务">💙 深蓝商务</button>
-                    <button class="tag-btn" data-val="马卡龙">🍬 马卡龙</button>
-                    <button class="tag-btn" data-val="夜景霓虹">🌃 夜景霓虹</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 生成按钮 -->
         <div class="generate-btn-wrap">
             <button class="generate-btn" id="generateBtn" onclick="window.generatePrompts()">
                 ⚡ 生成20组国际级商业海报提示词
             </button>
         </div>
 
-        <div class="stats-bar" id="statsBar">👆 输入海报需求，选择条件，点击按钮生成提示词</div>
-
+        <div class="stats-bar" id="statsBar">👆 所有选择均可留空，留空则不输出该维度信息</div>
         <div class="results-grid" id="resultsBox">
-            <div class="empty-state">👆 输入海报需求与主标题，选择条件，点击按钮生成20组不重复提示词</div>
+            <div class="empty-state">👆 输入海报需求与主标题，选择条件（可选），点击按钮生成20组不重复提示词</div>
         </div>
     </div>
 
     <script>
         (function() {
             'use strict';
-
-            // ==================== 超大元素库 ====================
             const LIB = {
-                layouts: [
-                    "中心爆点构图", "对角线动态构图", "杂志封面版式", "拼贴解构布局", "极简留白美学",
-                    "卡片层级排版", "黄金分割比例", "视觉焦点爆破", "三分法经典", "环形聚焦构图",
-                    "Z型视觉动线", "F型阅读布局", "悬浮层级构图", "透视纵深布局", "对称仪式感构图"
+                layouts: ["中心爆点构图", "对角线动态构图", "杂志封面版式", "拼贴解构布局", "极简留白美学", "卡片层级排版",
+                    "黄金分割比例", "视觉焦点爆破", "三分法经典", "环形聚焦构图", "Z型视觉动线", "F型阅读布局", "悬浮层级构图",
+                    "透视纵深布局", "对称仪式感构图"
                 ],
-                moods: [
-                    "食欲爆炸", "视觉冲击", "高级质感", "强转化率", "吸睛引流", "温暖治愈", "奢华精致",
-                    "烟火气息", "清新自然", "炫酷科技", "信任权威", "年轻活力", "优雅知性", "神秘高端",
-                    "热血沸腾", "冷静专业"
+                moods: ["食欲爆炸", "视觉冲击", "高级质感", "强转化率", "吸睛引流", "温暖治愈", "奢华精致", "烟火气息", "清新自然",
+                    "炫酷科技", "信任权威", "年轻活力", "优雅知性", "神秘高端", "热血沸腾", "冷静专业"
                 ],
-                lighting: [
-                    "柔光漫射质感", "侧光立体雕刻", "逆光轮廓光晕", "强对比戏剧光", "顶光聚焦舞台",
-                    "环境光沉浸感", "暖色灯光温馨", "自然散射光通透", "霓虹灯光氛围", "烛光氛围私享",
-                    "硬光锐利商业", "蝴蝶光人像级", "环形光均匀"
+                lighting: ["柔光漫射质感", "侧光立体雕刻", "逆光轮廓光晕", "强对比戏剧光", "顶光聚焦舞台", "环境光沉浸感", "暖色灯光温馨",
+                    "自然散射光通透", "霓虹灯光氛围", "烛光氛围私享", "硬光锐利商业", "蝴蝶光人像级", "环形光均匀"
                 ],
-                marketingTones: [
-                    "限时抢购紧迫感", "社交货币分享欲", "身份认同归属感", "稀缺性驱动", "从众效应引导",
-                    "权威背书信任", "情感共鸣触动", "利益点直击", "好奇心缺口", "仪式感营造",
-                    "成就感满足", "焦虑解决导向"
+                marketingTones: ["限时抢购紧迫感", "社交货币分享欲", "身份认同归属感", "稀缺性驱动", "从众效应引导", "权威背书信任",
+                    "情感共鸣触动", "利益点直击", "好奇心缺口", "仪式感营造", "成就感满足", "焦虑解决导向"
+                ]
+            };
+            const ALL_DATA = {
+                posterType: ["餐饮海报", "AI科技海报", "招生课程海报", "企业商务海报", "活动促销海报", "招聘海报", "电商海报", "美业海报",
+                    "房地产海报", "自建房海报", "风水命理海报", "节日节气海报", "短视频封面", "社群裂变海报", "数据战报海报", "城市文旅海报",
+                    "品牌宣传海报", "产品介绍海报", "会员权益海报", "高端极简海报", "国潮海报", "拼贴海报", "渐变科技海报", "潮流视觉海报",
+                    "UI界面风海报", "赛博朋克海报", "复古海报", "杂志风海报", "直播间宣传海报", "插画海报", "C4D海报", "医疗海报",
+                    "医美海报", "健身海报", "汽车海报", "家居海报", "家装海报", "家电海报", "数码产品海报", "珠宝首饰海报", "服装穿搭海报",
+                    "鞋包潮牌海报", "母婴海报", "宠物海报", "教育培训海报", "留学海报", "金融理财海报", "保险海报", "法律咨询海报",
+                    "婚庆海报", "摄影海报", "旅游海报", "民宿酒店海报", "KTV酒吧海报", "夜店派对海报", "茶叶海报", "酒水海报",
+                    "农产品海报", "生鲜水果海报", "超市促销海报", "商场活动海报", "展会海报", "招商加盟海报", "招代理海报", "工厂制造海报",
+                    "工业机械海报", "建材海报", "家具海报", "光伏新能源海报", "AI工具海报", "SaaS软件海报", "APP推广海报", "裂变海报",
+                    "引流海报", "私域海报", "转化成交海报", "秒杀海报", "限时抢购海报", "倒计时海报", "拼团海报", "砍价海报", "预约海报",
+                    "预售海报", "新品发布海报", "爆款推荐海报", "直播预告海报", "直播间福利海报", "直播间贴片海报", "会员充值海报",
+                    "VIP权益海报", "储值海报", "邀请函海报", "打卡海报", "社群海报", "裂变红包海报", "福利领取海报", "渠道招商海报",
+                    "城市合伙人海报", "招募令海报", "课程转化海报", "爆单战报海报", "签单喜报海报", "战绩海报", "数据增长海报", "抖音海报",
+                    "小红书封面", "视频号海报", "快手海报", "B站封面", "公众号首图", "公众号次图", "微信朋友圈海报", "社群长图", "电商主图",
+                    "淘宝海报", "拼多多海报", "京东海报", "亚马逊海报", "Etsy海报", "TikTok海报", "Instagram海报", "Facebook广告图",
+                    "YouTube封面"
                 ],
-                trends2026: [
-                    "AI生成美学融合", "动态模糊质感", "液态金属反射", "超现实材质碰撞",
-                    "微交互视觉暗示", "包容性设计语言", "生物亲和纹理", "数字废墟美学",
-                    "全息投影质感", "参数化图案"
+                targetUser: ["年轻用户", "女性用户", "高净值用户", "老板", "创业者", "学生", "宝妈", "餐饮用户", "企业客户", "AI从业者",
+                    "设计师", "装修客户", "命理客户", "短视频用户", "小红书用户", "抖音用户"
                 ],
-                xiaohongshuTrends: [
-                    "氛围感大片", "生活仪式感", "好物分享逻辑", "前后对比冲击", "场景化种草",
-                    "情绪价值优先", "高颜值排版", "干货清单体"
+                styleType: ["极简风", "轻奢风", "高级灰风", "莫兰迪风", "新中式风", "北欧风", "日式风", "韩系风", "ins风", "潮玩风",
+                    "蒸汽波风", "酸性设计风", "液态金属风", "玻璃拟态风", "毛绒风", "卡通风", "手绘风", "插画风", "像素风", "未来科技风",
+                    "朋克风", "暗黑风", "奢侈品风", "苹果风", "UI科技风", "3D立体风", "C4D风", "电影海报风", "游戏风", "二次元风",
+                    "国风水墨风", "敦煌风", "非遗风", "民族风", "泡泡玛特风", "Y2K风", "多巴胺风", "孟菲斯风", "几何风", "弥散渐变风",
+                    "AI未来风", "科技风", "国潮风", "拼贴风", "渐变风", "赛博朋克", "商务风", "电商风", "杂志风", "INS风", "港风",
+                    "美式复古", "潮流街头", "情绪感", "高端黑金", "红金促销", "数据可视化风", "粒子光效风", "手写艺术风", "书法国风",
+                    "新中式", "夜市烟火风", "高端建筑风", "豪宅风", "AI未来感", "爆款短视频封面风"
                 ],
-                douyinTrends: [
-                    "前3秒视觉钩子", "信息流适配", "大字标题冲击", "色彩对比爆炸", "动态模糊引导",
-                    "表情符号化设计", "节奏感切割", "爆款标签化"
+                colorMatch: ["黑金", "红金", "蓝紫渐变", "莫兰迪", "奶油色", "高级灰", "荧光渐变", "科技蓝", "中国红", "国潮橙", "赛博紫",
+                    "苹果极简白", "暗黑高级灰", "金属银", "深蓝商务", "马卡龙", "夜景霓虹"
+                ],
+                festival: ["春节海报", "元宵海报", "情人节海报", "女神节海报", "清明海报", "劳动节海报", "青年节海报", "母亲节海报",
+                    "儿童节海报", "父亲节海报", "七夕海报", "中秋海报", "国庆海报", "双十一海报", "双十二海报", "圣诞海报", "跨年海报",
+                    "开工大吉海报", "开业大吉海报", "周年庆海报", "节气海报（24节气）"
+                ],
+                moodAtmo: ["高端氛围海报", "情绪文案海报", "孤独感海报", "治愈系海报", "热血海报", "励志海报", "焦虑感海报", "松弛感海报",
+                    "禅意海报", "高级感海报", "神秘感海报", "未来感海报", "氛围感海报", "艺术展览风海报"
+                ],
+                highEnd: ["奢侈品海报", "艺术展海报", "拍卖会海报", "高端会所海报", "企业峰会海报", "高端论坛海报", "发布会海报", "时装秀海报",
+                    "品牌联名海报", "IPO庆典海报", "企业文化海报"
                 ]
             };
 
-            const ALL_POSTER_TYPES = [
-                "餐饮海报", "AI科技海报", "招生课程海报", "企业商务海报", "活动促销海报",
-                "招聘海报", "电商海报", "美业海报", "房地产海报", "自建房海报", "风水命理海报",
-                "节日节气海报", "短视频封面", "社群裂变海报", "数据战报海报", "城市文旅海报",
-                "品牌宣传海报", "产品介绍海报", "会员权益海报", "高端极简海报", "国潮海报",
-                "拼贴海报", "渐变科技海报", "潮流视觉海报", "UI界面风海报", "赛博朋克海报",
-                "复古海报", "杂志风海报", "直播间宣传海报"
-            ];
-            const ALL_TARGET_USERS = [
-                "年轻用户", "女性用户", "高净值用户", "老板", "创业者", "学生", "宝妈",
-                "餐饮用户", "企业客户", "AI从业者", "设计师", "装修客户", "命理客户",
-                "短视频用户", "小红书用户", "抖音用户"
-            ];
-            const ALL_STYLE_TYPES = [
-                "极简风", "轻奢风", "科技风", "高级灰", "国潮风", "拼贴风", "渐变风", "赛博朋克",
-                "商务风", "电商风", "杂志风", "INS风", "韩系风", "日系风", "港风", "美式复古",
-                "潮流街头", "情绪感", "高端黑金", "红金促销", "UI科技风", "数据可视化风",
-                "粒子光效风", "玻璃拟态风", "未来科技风", "手写艺术风", "书法国风", "新中式",
-                "夜市烟火风", "高端建筑风", "豪宅风", "AI未来感", "爆款短视频封面风"
-            ];
-            const ALL_COLOR_MATCHES = [
-                "黑金", "红金", "蓝紫渐变", "莫兰迪", "奶油色", "高级灰", "荧光渐变",
-                "科技蓝", "中国红", "国潮橙", "赛博紫", "苹果极简白", "暗黑高级灰",
-                "金属银", "深蓝商务", "马卡龙", "夜景霓虹"
-            ];
+            function shuffleArray(arr) { const s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j =
+                    Math.floor(Math.random() * (i + 1));
+                    [s[i], s[j]] = [s[j], s[i]]; } return s; }
 
-            // ==================== 工具函数 ====================
-            function shuffleArray(arr) {
-                const s = [...arr];
-                for (let i = s.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [s[i], s[j]] = [s[j], s[i]];
-                }
-                return s;
-            }
-
-            function pickRandom(arr) {
-                return arr[Math.floor(Math.random() * arr.length)];
-            }
+            function pickRandom(arr) { return arr.length ? arr[Math.floor(Math.random() * arr.length)] : ''; }
 
             function getSelectedValues(groupName) {
-                const btns = document.querySelectorAll(`.btn-group[data-group="${groupName}"] .tag-btn.selected`);
+                const btns = document.querySelectorAll(`.btn-grid[data-group="${groupName}"] .tag-btn.selected`);
                 return Array.from(btns).map(b => b.getAttribute('data-val'));
             }
 
-            function generateUniqueCombinations(selectedPosterTypes, selectedStyles, selectedColors,
-            selectedUsers) {
-                const posterTypes = selectedPosterTypes.length > 0 ? selectedPosterTypes : ALL_POSTER_TYPES;
-                const styles = selectedStyles.length > 0 ? selectedStyles : ALL_STYLE_TYPES;
-                const colors = selectedColors.length > 0 ? selectedColors : ALL_COLOR_MATCHES;
-                const users = selectedUsers.length > 0 ? selectedUsers : ALL_TARGET_USERS;
-
+            function generateUniqueCombinations() {
+                const groups = ['posterType', 'targetUser', 'styleType', 'colorMatch', 'festival', 'moodAtmo',
+                'highEnd'];
+                const selected = {};
+                groups.forEach(g => {
+                    const vals = getSelectedValues(g);
+                    selected[g] = vals.length > 0 ? vals : [];
+                });
                 const targetCount = 20;
-                const combinations = [];
+                const combos = [];
                 const usedKeys = new Set();
                 let attempts = 0;
-                const maxAttempts = 50000;
-
-                const shuffledLayouts = shuffleArray(LIB.layouts);
-                const shuffledMoods = shuffleArray(LIB.moods);
-                const shuffledLighting = shuffleArray(LIB.lighting);
-                const shuffledMarketing = shuffleArray(LIB.marketingTones);
-                const shuffledTrends2026 = shuffleArray(LIB.trends2026);
-                const shuffledXhs = shuffleArray(LIB.xiaohongshuTrends);
-                const shuffledDy = shuffleArray(LIB.douyinTrends);
-
-                while (combinations.length < targetCount && attempts < maxAttempts) {
+                const maxAttempts = 60000;
+                const shLayouts = shuffleArray(LIB.layouts);
+                const shMoods = shuffleArray(LIB.moods);
+                const shLight = shuffleArray(LIB.lighting);
+                const shMarket = shuffleArray(LIB.marketingTones);
+                while (combos.length < targetCount && attempts < maxAttempts) {
                     attempts++;
-                    const combo = {
-                        posterType: pickRandom(posterTypes),
-                        style: pickRandom(styles),
-                        color: pickRandom(colors),
-                        targetUser: pickRandom(users),
-                        layout: pickRandom(shuffledLayouts),
-                        mood: pickRandom(shuffledMoods),
-                        lighting: pickRandom(shuffledLighting),
-                        marketing: pickRandom(shuffledMarketing),
-                        trend2026: pickRandom(shuffledTrends2026),
-                        xhsTrend: pickRandom(shuffledXhs),
-                        dyTrend: pickRandom(shuffledDy),
+                    const c = {
+                        posterType: pickRandom(selected.posterType),
+                        targetUser: pickRandom(selected.targetUser),
+                        style: pickRandom(selected.styleType),
+                        color: pickRandom(selected.colorMatch),
+                        festival: pickRandom(selected.festival),
+                        moodAtmo: pickRandom(selected.moodAtmo),
+                        highEnd: pickRandom(selected.highEnd),
+                        layout: pickRandom(shLayouts),
+                        mood: pickRandom(shMoods),
+                        lighting: pickRandom(shLight),
+                        marketing: pickRandom(shMarket)
                     };
                     const key =
-                        `${combo.posterType}|${combo.style}|${combo.color}|${combo.targetUser}|${combo.layout}|${combo.mood}|${combo.lighting}|${combo.marketing}|${combo.trend2026}|${combo.xhsTrend}|${combo.dyTrend}`;
-                    if (!usedKeys.has(key)) {
-                        usedKeys.add(key);
-                        combinations.push(combo);
-                    }
+                        `${c.posterType}|${c.targetUser}|${c.style}|${c.color}|${c.festival}|${c.moodAtmo}|${c.highEnd}|${c.layout}|${c.mood}|${c.lighting}|${c.marketing}`;
+                    if (!usedKeys.has(key)) { usedKeys.add(key);
+                        combos.push(c); }
                 }
-                return combinations.slice(0, targetCount);
+                return combos.slice(0, targetCount);
             }
 
-            function buildPromptText(postRequest, mainTitle, extraInfo, combo, index) {
-                const request = postRequest; // 海报需求 · 原样保留
-                const title = mainTitle; // 主标题文字 · 原样保留
-                const extra = extraInfo; // 额外信息 · 原样保留
-
-                let prompt = `【国际商业海报 · 提示词 #${index + 1}】\n\n`;
-                prompt += `━━━━━━━━━━━━━━━━━━━━\n`;
-                prompt += `📌 海报类型：${combo.posterType}\n`;
-                prompt += `🎯 海报需求：${request}`;
-                if (title) prompt += `\n📝 主标题文字：${title}`;
-                prompt += `\n`;
-                prompt += `👤 目标用户：${combo.targetUser}\n`;
-                prompt += `🎨 视觉风格：${combo.style}\n`;
-                prompt += `🌈 色彩方案：${combo.color}\n`;
-                prompt += `📐 构图方式：${combo.layout}\n`;
-                prompt += `💡 光影效果：${combo.lighting}\n`;
-                prompt += `✨ 情绪调性：${combo.mood}\n`;
-                prompt += `🧠 营销逻辑：${combo.marketing}\n`;
-                prompt += `🔮 2026设计趋势：${combo.trend2026}\n`;
-                prompt += `📕 小红书趋势：${combo.xhsTrend}\n`;
-                prompt += `🎵 抖音爆款趋势：${combo.dyTrend}\n`;
-                if (extra) {
-                    prompt += `📋 额外信息：${extra}\n`;
-                }
-                prompt += `\n`;
-                prompt += `【国际级商业视觉标准】\n`;
-                prompt += `• 品牌思维：信息层级清晰，品牌符号自然融入\n`;
-                prompt += `• 用户心理：精准触达${combo.targetUser}决策链路\n`;
-                prompt += `• 成交逻辑：${combo.marketing}驱动转化\n`;
-                prompt += `• AI视觉趋势：${combo.trend2026}\n`;
-                prompt += `• 平台适配：小红书氛围感+抖音前3秒视觉钩子\n`;
-                prompt += `• 输出规格：8K超高清、商业级精修、适配多平台裁剪\n`;
-                prompt += `• 禁止：低端审美、廉价配色、杂乱排版、普通化设计`;
-
-                return prompt;
+            function buildPromptText(postReq, mainTitle, extraInfo, combo, idx) {
+                let p = `【国际商业海报 · 提示词 #${idx + 1}】\n\n`;
+                p += `━━━━━━━━━━━━━━━━━━━━\n`;
+                if (combo.posterType) p += `📌 海报类型：${combo.posterType}\n`;
+                p += `🎯 海报需求：${postReq || '未指定'}`;
+                if (mainTitle) p += `\n📝 主标题文字：${mainTitle}`;
+                if (combo.targetUser) p += `\n👤 目标用户：${combo.targetUser}`;
+                if (combo.style) p += `\n🎨 视觉风格：${combo.style}`;
+                if (combo.color) p += `\n🌈 色彩方案：${combo.color}`;
+                p += `\n📐 构图方式：${combo.layout}`;
+                p += `\n💡 光影效果：${combo.lighting}`;
+                p += `\n✨ 情绪调性：${combo.mood}`;
+                p += `\n🧠 营销逻辑：${combo.marketing}`;
+                if (combo.festival) p += `\n🎊 节日节气：${combo.festival}`;
+                if (combo.moodAtmo) p += `\n💫 情绪氛围：${combo.moodAtmo}`;
+                if (combo.highEnd) p += `\n💎 高端商业：${combo.highEnd}`;
+                if (extraInfo) p += `\n📋 额外信息：${extraInfo}`;
+                p += `\n\n【国际级商业视觉标准】\n`;
+                p += `• 品牌思维：信息层级清晰，品牌符号自然融入\n`;
+                p += `• 输出规格：8K超高清、商业级精修、适配多平台裁剪\n`;
+                p += `• 禁止：低端审美、廉价配色、杂乱排版、普通化设计`;
+                return p;
             }
 
-            // ==================== 主生成函数 ====================
-            function generatePrompts() {
-                const topicInput = document.getElementById('topicInput');
-                const brandInput = document.getElementById('brandInput');
-                const extraInput = document.getElementById('extraInput');
-                const resultsBox = document.getElementById('resultsBox');
-                const statsBar = document.getElementById('statsBar');
-                const generateBtn = document.getElementById('generateBtn');
+            function escapeHtml(t) { const m = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }; return t
+                    .replace(/[&<>"']/g, c => m[c]); }
 
-                const postRequest = topicInput.value.trim(); // 海报需求
-                const mainTitle = brandInput.value.trim(); // 主标题文字
-                const extraInfo = extraInput.value.trim(); // 额外信息
+            function escapeAttr(t) { return t.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-                if (!postRequest) {
-                    alert('⚠️ 请输入海报需求（必填）');
-                    topicInput.focus();
-                    return;
-                }
-
-                const selectedPosterTypes = getSelectedValues('posterType');
-                const selectedStyles = getSelectedValues('styleType');
-                const selectedColors = getSelectedValues('colorMatch');
-                const selectedUsers = getSelectedValues('targetUser');
-
-                generateBtn.disabled = true;
-                generateBtn.textContent = '⏳ 生成中...';
-                resultsBox.innerHTML = '<div class="empty-state">⏳ 正在生成20组国际级商业海报提示词...</div>';
-
-                setTimeout(() => {
-                    try {
-                        const combinations = generateUniqueCombinations(selectedPosterTypes,
-                            selectedStyles, selectedColors, selectedUsers);
-                        const prompts = combinations.map((combo, i) =>
-                            buildPromptText(postRequest, mainTitle, extraInfo, combo, i)
-                        );
-
-                        const uniqueCheck = new Set(prompts);
-                        const isAllUnique = uniqueCheck.size === prompts.length;
-                        console.log('========== 去重验证报告 ==========');
-                        console.log(`✅ 生成数量：${prompts.length}组 | 去重后：${uniqueCheck.size}组 | 状态：${isAllUnique ? '完全去重 ✓' : '已修复 ✓'}`);
-                        console.log(`✅ 海报需求"${postRequest}"原样保留验证：通过`);
-                        if (mainTitle) console.log(`✅ 主标题"${mainTitle}"原样保留验证：通过`);
-                        console.log('===================================');
-
-                        let finalPrompts = prompts;
-                        if (!isAllUnique) {
-                            const seen = new Set();
-                            finalPrompts = [];
-                            for (const p of prompts) {
-                                if (!seen.has(p)) { seen.add(p);
-                                    finalPrompts.push(p); } else {
-                                    const nc = generateUniqueCombinations(selectedPosterTypes,
-                                        selectedStyles, selectedColors, selectedUsers)[0];
-                                    const np = buildPromptText(postRequest, mainTitle, extraInfo, nc,
-                                        finalPrompts.length);
-                                    if (!seen.has(np)) { seen.add(np);
-                                        finalPrompts.push(np); }
-                                }
-                            }
-                            while (finalPrompts.length < 20) {
-                                const ec = generateUniqueCombinations(selectedPosterTypes, selectedStyles,
-                                    selectedColors, selectedUsers)[0];
-                                const ep = buildPromptText(postRequest, mainTitle, extraInfo, ec, finalPrompts
-                                    .length);
-                                if (!seen.has(ep)) { seen.add(ep);
-                                    finalPrompts.push(ep); }
-                            }
-                        }
-
-                        resultsBox.innerHTML = '';
-                        finalPrompts.forEach((ptext, idx) => {
-                            const itemDiv = document.createElement('div');
-                            itemDiv.className = 'item';
-                            itemDiv.innerHTML = `
-                                <div class="item-header">
-                                    <div class="item-number">${idx + 1}</div>
-                                    <span class="unique-badge">✦ 国际商业标准</span>
-                                </div>
-                                <div class="prompt-text">${escapeHtml(ptext)}</div>
-                                <button class="copy-btn" data-prompt="${escapeAttr(ptext)}">📋 复制提示词</button>
-                            `;
-                            const copyBtn = itemDiv.querySelector('.copy-btn');
-                            copyBtn.addEventListener('click', function() {
-                                const txt = this.getAttribute('data-prompt');
-                                navigator.clipboard.writeText(txt).then(() => {
-                                    this.innerHTML = '✅ 已复制';
-                                    this.classList.add('copied');
-                                    setTimeout(() => { this.innerHTML = '📋 复制提示词'; this
-                                            .classList.remove('copied'); }, 2000);
-                                }).catch(() => {
-                                    const ta = document.createElement('textarea');
-                                    ta.value = txt;
-                                    document.body.appendChild(ta);
-                                    ta.select();
-                                    document.execCommand('copy');
-                                    document.body.removeChild(ta);
-                                    this.innerHTML = '✅ 已复制';
-                                    this.classList.add('copied');
-                                    setTimeout(() => { this.innerHTML = '📋 复制提示词'; this
-                                            .classList.remove('copied'); }, 2000);
-                                });
-                            });
-                            resultsBox.appendChild(itemDiv);
-                        });
-
-                        const selPT = selectedPosterTypes.length > 0 ? selectedPosterTypes.join('、') :
-                            '全部类型';
-                        const selST = selectedStyles.length > 0 ? selectedStyles.join('、') : '全部风格';
-                        const selCL = selectedColors.length > 0 ? selectedColors.join('、') : '全部配色';
-                        const selUS = selectedUsers.length > 0 ? selectedUsers.join('、') : '全部用户';
-                        statsBar.innerHTML = `
-                            ✅ 成功生成 <strong>${finalPrompts.length}</strong> 组国际级商业海报提示词 | 
-                            类型：<strong>${selPT}</strong> | 风格：<strong>${selST}</strong> | 
-                            配色：<strong>${selCL}</strong> | 用户：<strong>${selUS}</strong> | 
-                            海报需求"<strong>${postRequest}</strong>"原样保留
-                        `;
-                    } catch (error) {
-                        console.error('生成出错：', error);
-                        resultsBox.innerHTML = '<div class="empty-state">❌ 生成失败，请刷新页面重试</div>';
-                    } finally {
-                        generateBtn.disabled = false;
-                        generateBtn.innerHTML = '⚡ 生成20组国际级商业海报提示词';
-                    }
-                }, 120);
-            }
-
-            function escapeHtml(text) {
-                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-                return text.replace(/[&<>"']/g, m => map[m]);
-            }
-
-            function escapeAttr(text) {
-                return text.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            }
-
-            // ==================== 按钮交互 ====================
-            function initTagButtons() {
-                document.querySelectorAll('.btn-group .tag-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        this.classList.toggle('selected');
+            function renderButtons() {
+                Object.keys(ALL_DATA).forEach(group => {
+                    const container = document.querySelector(`.btn-grid[data-group="${group}"]`);
+                    if (!container) return;
+                    container.innerHTML = '';
+                    const uniqueVals = [...new Set(ALL_DATA[group])];
+                    uniqueVals.forEach(val => {
+                        const btn = document.createElement('button');
+                        btn.className = 'tag-btn';
+                        btn.setAttribute('data-val', val);
+                        btn.textContent = val;
+                        btn.addEventListener('click', function() { this.classList.toggle(
+                            'selected'); });
+                        container.appendChild(btn);
                     });
                 });
             }
 
-            // ==================== 折叠面板 ====================
-            function initCollapseToggles() {
+            function initCollapse() {
                 document.querySelectorAll('.collapse-toggle').forEach(toggle => {
                     toggle.addEventListener('click', function() {
                         const targetId = this.getAttribute('data-target');
+                        if (!targetId) return;
                         const content = document.getElementById(targetId);
                         if (!content) return;
                         const isOpen = content.classList.contains('expanded');
@@ -1003,14 +798,75 @@
                 });
             }
 
-            // ==================== 初始化 ====================
+            function generatePrompts() {
+                const postReq = document.getElementById('topicInput').value.trim();
+                const mainTitle = document.getElementById('brandInput').value.trim();
+                const extraInfo = document.getElementById('extraInput').value.trim();
+                const btn = document.getElementById('generateBtn');
+                btn.disabled = true;
+                btn.textContent = '⏳ 生成中...';
+                document.getElementById('resultsBox').innerHTML =
+                    '<div class="empty-state">⏳ 正在生成20组国际级商业海报提示词...</div>';
+                setTimeout(() => {
+                    try {
+                        const combos = generateUniqueCombinations();
+                        const prompts = combos.map((c, i) => buildPromptText(postReq, mainTitle,
+                            extraInfo, c, i));
+                        let finalPrompts = [...new Set(prompts)];
+                        while (finalPrompts.length < 20) {
+                            const ec = generateUniqueCombinations()[0];
+                            const ep = buildPromptText(postReq, mainTitle, extraInfo, ec, finalPrompts
+                                .length);
+                            if (!finalPrompts.includes(ep)) finalPrompts.push(ep);
+                        }
+                        finalPrompts = finalPrompts.slice(0, 20);
+                        const box = document.getElementById('resultsBox');
+                        box.innerHTML = '';
+                        finalPrompts.forEach((pt, i) => {
+                            const div = document.createElement('div');
+                            div.className = 'item';
+                            div.innerHTML =
+                                `<div class="item-header"><div class="item-number">${i+1}</div><span class="unique-badge">✦ 国际商业标准</span></div><div class="prompt-text">${escapeHtml(pt)}</div><button class="copy-btn" data-prompt="${escapeAttr(pt)}">📋 复制提示词</button>`;
+                            div.querySelector('.copy-btn').addEventListener('click', function() {
+                                const t = this.getAttribute('data-prompt');
+                                navigator.clipboard.writeText(t).then(() => { this
+                                        .innerHTML = '✅ 已复制';
+                                    this.classList.add('copied');
+                                    setTimeout(() => { this.innerHTML =
+                                            '📋 复制提示词';
+                                        this.classList.remove('copied'); }, 2000); })
+                                    .catch(() => { const ta = document.createElement(
+                                            'textarea');
+                                        ta.value = t;
+                                        document.body.appendChild(ta);
+                                        ta.select();
+                                        document.execCommand('copy');
+                                        document.body.removeChild(ta);
+                                        this.innerHTML = '✅ 已复制';
+                                        this.classList.add('copied');
+                                        setTimeout(() => { this.innerHTML =
+                                                '📋 复制提示词';
+                                            this.classList.remove('copied'); },
+                                            2000); });
+                            });
+                            box.appendChild(div);
+                        });
+                        const selectedCount = ['posterType','targetUser','styleType','colorMatch','festival','moodAtmo','highEnd'].reduce((acc,g)=>acc+getSelectedValues(g).length,0);
+                        document.getElementById('statsBar').innerHTML =
+                            `✅ 生成 <strong>${finalPrompts.length}</strong> 组提示词 | 已选维度：<strong>${selectedCount}</strong> 个 | 未选维度留空不输出`;
+                    } catch (e) { console.error(e);
+                        document.getElementById('resultsBox').innerHTML =
+                            '<div class="empty-state">❌ 生成失败，请刷新重试</div>'; } finally { btn.disabled =
+                            false;
+                        btn.innerHTML = '⚡ 生成20组国际级商业海报提示词'; }
+                }, 100);
+            }
+
             window.addEventListener('DOMContentLoaded', () => {
-                initTagButtons();
-                initCollapseToggles();
-                // 默认生成示例
+                renderButtons();
+                initCollapse();
                 generatePrompts();
             });
-
             window.generatePrompts = generatePrompts;
         })();
     </script>
