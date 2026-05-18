@@ -1,874 +1,779 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>国际商业海报提示词生成器 · 古月AI智能体</title>
-    <style>
-        :root {
-            --bg-deep: #060a10;
-            --bg-card: rgba(10, 14, 24, 0.88);
-            --border-subtle: rgba(255, 255, 255, 0.05);
-            --border-active: rgba(255, 140, 30, 0.55);
-            --accent: #ff6a00;
-            --accent2: #ee0979;
-            --gold: #d4a853;
-            --text-primary: #e6eaf2;
-            --text-secondary: #8b9bb5;
-            --text-hint: #54637a;
-            --radius-lg: 16px;
-            --radius-md: 9px;
-            --radius-sm: 6px;
-            --shadow-glow: 0 0 24px rgba(255, 106, 0, 0.22);
-            --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.5);
-            --transition-fast: 0.16s ease;
-            --transition-smooth: 0.26s cubic-bezier(0.4, 0, 0.2, 1);
-            --scrollbar-width: 6px;
-            --scrollbar-track: rgba(255, 255, 255, 0.03);
-            --scrollbar-thumb: rgba(255, 106, 0, 0.35);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>国际商业海报提示词生成器 · 古月AI智能体</title>
+  <style>
+    :root {
+      --bg-deep: #060a10;
+      --bg-card: rgba(10, 14, 24, 0.88);
+      --border-subtle: rgba(255, 255, 255, 0.05);
+      --border-active: rgba(255, 140, 30, 0.55);
+      --accent: #ff6a00;
+      --accent2: #ee0979;
+      --gold: #d4a853;
+      --text-primary: #e6eaf2;
+      --text-secondary: #8b9bb5;
+      --text-hint: #54637a;
+      --radius-lg: 16px;
+      --radius-md: 9px;
+      --radius-sm: 6px;
+      --shadow-glow: 0 0 24px rgba(255, 106, 0, 0.22);
+      --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.5);
+      --transition-fast: 0.16s ease;
+      --transition-smooth: 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+      --scrollbar-width: 6px;
+      --scrollbar-track: rgba(255, 255, 255, 0.03);
+      --scrollbar-thumb: rgba(255, 106, 0, 0.35);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
-            background: var(--bg-deep);
-            min-height: 100vh;
-            color: var(--text-primary);
-            padding: 20px 14px 44px;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 12% 16%, rgba(255, 106, 0, 0.07) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 74%, rgba(238, 9, 121, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(80, 120, 200, 0.03) 0%, transparent 65%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='50' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='25' cy='25' r='0.35' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") repeat;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.5;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .header .logo-line {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 28px;
-            padding: 5px 16px;
-            font-size: 0.74rem;
-            color: #8b9bb5;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-            backdrop-filter: blur(5px);
-        }
-        .header .logo-line .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 9px var(--accent);
-        }
-        h1 {
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: 1.4px;
-            background: linear-gradient(135deg, #ff8c3a 0%, #ff6a00 24%, #ee0979 56%, #c44569 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 2px 8px rgba(255, 106, 0, 0.32));
-            margin-bottom: 3px;
-            line-height: 1.3;
-        }
-        .subtitle {
-            font-size: 0.82rem;
-            color: #54637a;
-            letter-spacing: 0.9px;
-        }
-        .subtitle span {
-            color: var(--gold);
-            font-weight: 500;
-        }
-
-        .main-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 14px 16px;
-            margin-bottom: 14px;
-            box-shadow: var(--shadow-card);
-            transition: var(--transition-smooth);
-        }
-        .main-card:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .collapse-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #bcc8dd;
-            user-select: none;
-            transition: color var(--transition-fast);
-            padding: 2px 0;
-        }
-        .collapse-toggle:hover {
-            color: #fff;
-        }
-        .collapse-toggle .arrow-icon {
-            font-size: 0.75rem;
-            transition: transform var(--transition-fast);
-            display: inline-block;
-            color: var(--accent);
-            margin-right: 2px;
-        }
-        .collapse-toggle.open .arrow-icon {
-            transform: rotate(90deg);
-        }
-        .collapse-toggle .badge-count {
-            font-size: 0.68rem;
-            background: rgba(255, 106, 0, 0.16);
-            color: #ff944d;
-            padding: 2px 9px;
-            border-radius: 11px;
-            font-weight: 400;
-            letter-spacing: 0.4px;
-            margin-left: auto;
-        }
-        .collapse-toggle .scroll-hint {
-            font-size: 0.6rem;
-            color: #54637a;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 2px 7px;
-            border-radius: 8px;
-            letter-spacing: 0.3px;
-            margin-left: 6px;
-        }
-
-        .collapse-content {
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.2s ease;
-            max-height: 0;
-            opacity: 0;
-            margin-top: 0;
-        }
-        .collapse-content.expanded {
-            max-height: 1200px;
-            opacity: 1;
-            margin-top: 10px;
-        }
-
-        .scrollable-btn-area {
-            max-height: 320px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-right: 4px;
-            scroll-behavior: smooth;
-        }
-        .scrollable-btn-area::-webkit-scrollbar {
-            width: var(--scrollbar-width);
-        }
-        .scrollable-btn-area::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-            border-radius: 10px;
-        }
-        .scrollable-btn-area::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 10px;
-            transition: background var(--transition-fast);
-        }
-        .scrollable-btn-area::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 140, 60, 0.6);
-        }
-        .scrollable-btn-area {
-            scrollbar-width: thin;
-            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-        }
-
-        .btn-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 5px;
-        }
-        .btn-grid .tag-btn {
-            padding: 5px 9px;
-            border-radius: 14px;
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.02);
-            color: #a8b6cc;
-            cursor: pointer;
-            font-size: 0.72rem;
-            letter-spacing: 0.3px;
-            transition: all var(--transition-fast);
-            white-space: nowrap;
-            font-family: inherit;
-            user-select: none;
-            text-align: center;
-            position: relative;
-        }
-        .tag-btn:hover {
-            border-color: rgba(255, 140, 60, 0.45);
-            background: rgba(255, 106, 0, 0.07);
-            color: #e0e6f2;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 10px rgba(255, 106, 0, 0.1);
-        }
-        .tag-btn.selected {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, rgba(255, 106, 0, 0.18), rgba(238, 9, 121, 0.13));
-            color: #fff;
-            font-weight: 600;
-            box-shadow: 0 0 16px rgba(255, 106, 0, 0.26);
-            letter-spacing: 0.5px;
-        }
-        .tag-btn.selected::after {
-            content: ' ✓';
-            font-size: 0.6rem;
-            opacity: 0.85;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            margin-top: 6px;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-            min-width: 170px;
-        }
-        .input-group label {
-            font-size: 0.78rem;
-            color: #bcc8dd;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-        input,
-        textarea {
-            padding: 10px 14px;
-            border: 2px solid rgba(255, 255, 255, 0.12);
-            border-radius: var(--radius-md);
-            background: rgba(0, 0, 0, 0.42);
-            color: #fff;
-            font-size: 0.88rem;
-            transition: all var(--transition-fast);
-            outline: none;
-            font-family: inherit;
-            width: 100%;
-            letter-spacing: 0.3px;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 62px;
-        }
-        input:focus,
-        textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 16px rgba(255, 106, 0, 0.22);
-            background: rgba(0, 0, 0, 0.6);
-        }
-        input::placeholder,
-        textarea::placeholder {
-            color: #3d4a5e;
-        }
-        .input-hint {
-            font-size: 0.66rem;
-            color: #3d4a5e;
-            margin-top: 1px;
-        }
-
-        .generate-btn-wrap {
-            text-align: center;
-            margin: 14px 0;
-        }
-        .generate-btn {
-            padding: 13px 40px;
-            border: none;
-            border-radius: 28px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979);
-            color: #fff;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 1.3px;
-            transition: all var(--transition-smooth);
-            box-shadow: 0 5px 24px rgba(255, 106, 0, 0.4);
-            font-family: inherit;
-            white-space: nowrap;
-            position: relative;
-            overflow: hidden;
-        }
-        .generate-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent);
-            pointer-events: none;
-        }
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(238, 9, 121, 0.5);
-            letter-spacing: 1.8px;
-        }
-        .generate-btn:active {
-            transform: translateY(0);
-        }
-        .generate-btn:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-            transform: none;
-            letter-spacing: 1.3px;
-        }
-
-        .stats-bar {
-            text-align: center;
-            padding: 10px 16px;
-            background: rgba(0, 0, 0, 0.32);
-            border-radius: var(--radius-md);
-            color: #8b9bb5;
-            font-size: 0.78rem;
-            margin-bottom: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .stats-bar strong {
-            color: #ff944d;
-            font-weight: 600;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 12px;
-        }
-        .item {
-            background: rgba(12, 16, 26, 0.82);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-md);
-            padding: 16px 18px;
-            line-height: 1.65;
-            transition: all var(--transition-smooth);
-            display: flex;
-            flex-direction: column;
-        }
-        .item:hover {
-            border-color: rgba(255, 140, 60, 0.4);
-            box-shadow: 0 6px 26px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 106, 0, 0.08);
-            transform: translateY(-2px);
-            background: rgba(14, 18, 30, 0.9);
-        }
-        .item-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .item-number {
-            background: linear-gradient(135deg, #ff6a00, #ee0979);
-            color: #fff;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-        }
-        .unique-badge {
-            background: rgba(212, 168, 83, 0.14);
-            color: #d4a853;
-            font-size: 0.66rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            letter-spacing: 0.4px;
-            font-weight: 500;
-        }
-        .prompt-text {
-            font-size: 0.8rem;
-            color: #dce3f0;
-            margin-bottom: 8px;
-            word-break: break-word;
-            flex: 1;
-            background: rgba(0, 0, 0, 0.28);
-            padding: 10px;
-            border-radius: 7px;
-            border-left: 3px solid var(--accent);
-            line-height: 1.75;
-            white-space: pre-wrap;
-        }
-        .copy-btn {
-            align-self: flex-start;
-            padding: 7px 16px;
-            border: none;
-            border-radius: 7px;
-            background: linear-gradient(135deg, #ee0979, #ff6a00);
-            color: #fff;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all var(--transition-fast);
-            font-family: inherit;
-            box-shadow: 0 2px 8px rgba(238, 9, 121, 0.28);
-        }
-        .copy-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 3px 14px rgba(238, 9, 121, 0.45);
-        }
-        .copy-btn.copied {
-            background: #35404f;
-            box-shadow: none;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 44px 18px;
-            color: #3d4a5e;
-            font-size: 0.95rem;
-            grid-column: 1 / -1;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.4rem;
-            }
-            .input-row {
-                flex-direction: column;
-            }
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-            .generate-btn {
-                width: 100%;
-                padding: 12px 18px;
-                font-size: 0.95rem;
-            }
-            .btn-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            }
-            .tag-btn {
-                font-size: 0.68rem;
-                padding: 4px 7px;
-                border-radius: 12px;
-            }
-            .main-card {
-                padding: 12px 10px;
-            }
-            .scrollable-btn-area {
-                max-height: 260px;
-            }
-        }
-    </style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+      background: var(--bg-deep);
+      min-height: 100vh;
+      color: var(--text-primary);
+      padding: 20px 14px 44px;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 12% 16%, rgba(255, 106, 0, 0.07) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 74%, rgba(238, 9, 121, 0.06) 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 50%, rgba(80, 120, 200, 0.03) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='50' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='25' cy='25' r='0.35' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .header .logo-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 28px;
+      padding: 5px 16px;
+      font-size: 0.74rem;
+      color: #8b9bb5;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      backdrop-filter: blur(5px);
+    }
+    .header .logo-line .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 9px var(--accent);
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      background: linear-gradient(135deg, #ff8c3a 0%, #ff6a00 24%, #ee0979 56%, #c44569 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(255, 106, 0, 0.32));
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    .subtitle {
+      font-size: 0.82rem;
+      color: #54637a;
+      letter-spacing: 0.9px;
+    }
+    .subtitle span {
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .main-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition-smooth);
+    }
+    .main-card:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .collapse-toggle {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #bcc8dd;
+      user-select: none;
+      transition: color var(--transition-fast);
+      padding: 2px 0;
+    }
+    .collapse-toggle:hover {
+      color: #fff;
+    }
+    .collapse-toggle .arrow-icon {
+      font-size: 0.75rem;
+      transition: transform var(--transition-fast);
+      display: inline-block;
+      color: var(--accent);
+      margin-right: 2px;
+    }
+    .collapse-toggle.open .arrow-icon {
+      transform: rotate(90deg);
+    }
+    .collapse-toggle .badge-count {
+      font-size: 0.68rem;
+      background: rgba(255, 106, 0, 0.16);
+      color: #ff944d;
+      padding: 2px 9px;
+      border-radius: 11px;
+      font-weight: 400;
+      letter-spacing: 0.4px;
+      margin-left: auto;
+    }
+    .collapse-toggle .scroll-hint {
+      font-size: 0.6rem;
+      color: #54637a;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2px 7px;
+      border-radius: 8px;
+      letter-spacing: 0.3px;
+      margin-left: 6px;
+    }
+    .collapse-content {
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.2s ease;
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+    }
+    .collapse-content.expanded {
+      max-height: 1200px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+    .scrollable-btn-area {
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+      scroll-behavior: smooth;
+    }
+    .scrollable-btn-area::-webkit-scrollbar {
+      width: var(--scrollbar-width);
+    }
+    .scrollable-btn-area::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+      border-radius: 10px;
+    }
+    .scrollable-btn-area::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 10px;
+      transition: background var(--transition-fast);
+    }
+    .scrollable-btn-area::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 140, 60, 0.6);
+    }
+    .scrollable-btn-area {
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 5px;
+    }
+    .btn-grid .tag-btn {
+      padding: 5px 8px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.02);
+      color: #a8b6cc;
+      cursor: pointer;
+      font-size: 0.7rem;
+      letter-spacing: 0.3px;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      font-family: inherit;
+      user-select: none;
+      text-align: center;
+      position: relative;
+    }
+    .tag-btn:hover {
+      border-color: rgba(255, 140, 60, 0.45);
+      background: rgba(255, 106, 0, 0.07);
+      color: #e0e6f2;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 10px rgba(255, 106, 0, 0.1);
+    }
+    .tag-btn.selected {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.18), rgba(238, 9, 121, 0.13));
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 0 16px rgba(255, 106, 0, 0.26);
+      letter-spacing: 0.5px;
+    }
+    .tag-btn.selected::after {
+      content: ' ✓';
+      font-size: 0.6rem;
+      opacity: 0.85;
+    }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-top: 6px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 170px;
+    }
+    .input-group label {
+      font-size: 0.78rem;
+      color: #bcc8dd;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    input, textarea {
+      padding: 10px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.42);
+      color: #fff;
+      font-size: 0.88rem;
+      transition: all var(--transition-fast);
+      outline: none;
+      font-family: inherit;
+      width: 100%;
+      letter-spacing: 0.3px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 62px;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(255, 106, 0, 0.22);
+      background: rgba(0, 0, 0, 0.6);
+    }
+    input::placeholder, textarea::placeholder {
+      color: #3d4a5e;
+    }
+    .input-hint {
+      font-size: 0.66rem;
+      color: #3d4a5e;
+      margin-top: 1px;
+    }
+    .generate-btn-wrap {
+      text-align: center;
+      margin: 14px 0;
+    }
+    .generate-btn {
+      padding: 13px 40px;
+      border: none;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #ff6a00, #ee0979);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1.3px;
+      transition: all var(--transition-smooth);
+      box-shadow: 0 5px 24px rgba(255, 106, 0, 0.4);
+      font-family: inherit;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .generate-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent);
+      pointer-events: none;
+    }
+    .generate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(238, 9, 121, 0.5);
+      letter-spacing: 1.8px;
+    }
+    .generate-btn:active {
+      transform: translateY(0);
+    }
+    .generate-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      letter-spacing: 1.3px;
+    }
+    .stats-bar {
+      text-align: center;
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.32);
+      border-radius: var(--radius-md);
+      color: #8b9bb5;
+      font-size: 0.78rem;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .stats-bar strong {
+      color: #ff944d;
+      font-weight: 600;
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 12px;
+    }
+    .item {
+      background: rgba(12, 16, 26, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      line-height: 1.65;
+      transition: all var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+    }
+    .item:hover {
+      border-color: rgba(255, 140, 60, 0.4);
+      box-shadow: 0 6px 26px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 106, 0, 0.08);
+      transform: translateY(-2px);
+      background: rgba(14, 18, 30, 0.9);
+    }
+    .item-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .item-number {
+      background: linear-gradient(135deg, #ff6a00, #ee0979);
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .unique-badge {
+      background: rgba(212, 168, 83, 0.14);
+      color: #d4a853;
+      font-size: 0.66rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.4px;
+      font-weight: 500;
+    }
+    .prompt-text {
+      font-size: 0.8rem;
+      color: #dce3f0;
+      margin-bottom: 8px;
+      word-break: break-word;
+      flex: 1;
+      background: rgba(0, 0, 0, 0.28);
+      padding: 10px;
+      border-radius: 7px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.75;
+      white-space: pre-wrap;
+    }
+    .copy-btn {
+      align-self: flex-start;
+      padding: 7px 16px;
+      border: none;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #ee0979, #ff6a00);
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all var(--transition-fast);
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(238, 9, 121, 0.28);
+    }
+    .copy-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 3px 14px rgba(238, 9, 121, 0.45);
+    }
+    .copy-btn.copied {
+      background: #35404f;
+      box-shadow: none;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 44px 18px;
+      color: #3d4a5e;
+      font-size: 0.95rem;
+      grid-column: 1 / -1;
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 1.4rem; }
+      .input-row { flex-direction: column; }
+      .results-grid { grid-template-columns: 1fr; }
+      .generate-btn { width: 100%; padding: 12px 18px; font-size: 0.95rem; }
+      .btn-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+      .tag-btn { font-size: 0.65rem; padding: 4px 6px; border-radius: 12px; }
+      .main-card { padding: 12px 10px; }
+      .scrollable-btn-area { max-height: 260px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-line"><span class="dot"></span> 古月AI智能体 <span class="dot"></span></div>
-            <h1>🌐 国际商业海报提示词生成器</h1>
-            <p class="subtitle">国际级商业视觉标准 · <span>20组</span>完全去重 · 按需输出</p>
+  <div class="container">
+    <div class="header">
+      <div class="logo-line"><span class="dot"></span> 古月AI智能体 <span class="dot"></span></div>
+      <h1>🌐 国际商业海报提示词生成器</h1>
+      <p class="subtitle">国际级商业视觉标准 · <span>20组</span>完全去重 · 按需输出</p>
+    </div>
+    <div class="main-card">
+      <div class="collapse-toggle" style="cursor:default; color:#bcc8dd; padding:0;">
+        <span style="color:var(--accent);">📝</span> 核心信息输入 (海报需求、标题等将原样保留)
+      </div>
+      <div class="input-row" style="margin-top:8px;">
+        <div class="input-group">
+          <label for="topicInput">🎯 海报需求</label>
+          <input id="topicInput" type="text" placeholder="例如：烤鱼促销海报、AI产品展示..." value="烤鱼">
+          <span class="input-hint">您的需求描述，原样保留</span>
         </div>
-
-        <!-- 输入区 -->
-        <div class="main-card">
-            <div class="collapse-toggle" style="cursor:default; color:#bcc8dd; padding:0;">
-                <span style="color:var(--accent);">📝</span> 核心信息输入 (海报需求、标题等将原样保留)
-            </div>
-            <div class="input-row" style="margin-top:8px;">
-                <div class="input-group">
-                    <label for="topicInput">🎯 海报需求</label>
-                    <input id="topicInput" type="text" placeholder="例如：烤鱼促销海报、AI产品展示..." value="烤鱼">
-                    <span class="input-hint">您的需求描述，原样保留</span>
-                </div>
-                <div class="input-group">
-                    <label for="brandInput">📝 主标题文字</label>
-                    <input id="brandInput" type="text" placeholder="例如：老街烤鱼馆、限时特惠..." value="老街烤鱼馆">
-                    <span class="input-hint">主标题，原样保留</span>
-                </div>
-            </div>
-            <div class="input-row" style="margin-top:6px;">
-                <div class="input-group">
-                    <label for="extraInput">📋 额外信息</label>
-                    <textarea id="extraInput" placeholder="例如：周年庆特惠、限量发售、扫码咨询等">🔥 周年庆特惠 · 全场8折
-                        📍 地址：美食街88号 · 营业至凌晨2点</textarea>
-                    <span class="input-hint">原样保留，不填则不输出</span>
-                </div>
-            </div>
+        <div class="input-group">
+          <label for="brandInput">📝 主标题文字</label>
+          <input id="brandInput" type="text" placeholder="例如：老街烤鱼馆、限时特惠..." value="老街烤鱼馆">
+          <span class="input-hint">主标题，原样保留</span>
         </div>
-
-        <!-- 对称布局 -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <!-- 左列 -->
-            <div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapsePosterType">
-                        <span class="arrow-icon">▶</span> 🎨 海报类型
-                        <span class="badge-count">可选</span>
-                        <span class="scroll-hint">🖱️ 滑动查看更多</span>
-                    </div>
-                    <div class="collapse-content" id="collapsePosterType">
-                        <div class="scrollable-btn-area">
-                            <div class="btn-grid" data-group="posterType"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapseFestival">
-                        <span class="arrow-icon">▶</span> 🎊 节日节气 <span class="badge-count">可选</span>
-                    </div>
-                    <div class="collapse-content" id="collapseFestival">
-                        <div class="btn-grid" data-group="festival"></div>
-                    </div>
-                </div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapseMoodAtmo">
-                        <span class="arrow-icon">▶</span> 💫 情绪氛围 <span class="badge-count">可选</span>
-                    </div>
-                    <div class="collapse-content" id="collapseMoodAtmo">
-                        <div class="btn-grid" data-group="moodAtmo"></div>
-                    </div>
-                </div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapseHighEnd">
-                        <span class="arrow-icon">▶</span> 💎 高端商业 <span class="badge-count">可选</span>
-                    </div>
-                    <div class="collapse-content" id="collapseHighEnd">
-                        <div class="btn-grid" data-group="highEnd"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- 右列 -->
-            <div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapseTargetUser">
-                        <span class="arrow-icon">▶</span> 👤 目标用户 <span class="badge-count">可选</span>
-                    </div>
-                    <div class="collapse-content" id="collapseTargetUser">
-                        <div class="btn-grid" data-group="targetUser"></div>
-                    </div>
-                </div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapseStyleType">
-                        <span class="arrow-icon">▶</span> 🎭 风格类型
-                        <span class="badge-count">可选</span>
-                        <span class="scroll-hint">🖱️ 滑动查看更多</span>
-                    </div>
-                    <div class="collapse-content" id="collapseStyleType">
-                        <div class="scrollable-btn-area">
-                            <div class="btn-grid" data-group="styleType"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="main-card">
-                    <div class="collapse-toggle" data-target="collapseColorMatch">
-                        <span class="arrow-icon">▶</span> 🎨 颜色匹配 <span class="badge-count">可选</span>
-                    </div>
-                    <div class="collapse-content" id="collapseColorMatch">
-                        <div class="btn-grid" data-group="colorMatch"></div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="input-row" style="margin-top:6px;">
+        <div class="input-group">
+          <label for="extraInput">📋 额外信息</label>
+          <textarea id="extraInput" placeholder="例如：周年庆特惠、限量发售、扫码咨询等">🔥 周年庆特惠 · 全场8折
+📍 地址：美食街88号 · 营业至凌晨2点</textarea>
+          <span class="input-hint">原样保留，不填则不输出</span>
         </div>
-
-        <div class="generate-btn-wrap">
-            <button class="generate-btn" id="generateBtn" onclick="window.generatePrompts()">
-                ⚡ 生成20组国际级商业海报提示词
-            </button>
-        </div>
-
-        <div class="stats-bar" id="statsBar">👆 所有选择均可留空，留空则不输出该维度信息</div>
-        <div class="results-grid" id="resultsBox">
-            <div class="empty-state">👆 输入海报需求与主标题，选择条件（可选），点击按钮生成20组不重复提示词</div>
-        </div>
+      </div>
     </div>
 
-    <script>
-        (function() {
-            'use strict';
-            const LIB = {
-                layouts: ["中心爆点构图", "对角线动态构图", "杂志封面版式", "拼贴解构布局", "极简留白美学", "卡片层级排版",
-                    "黄金分割比例", "视觉焦点爆破", "三分法经典", "环形聚焦构图", "Z型视觉动线", "F型阅读布局", "悬浮层级构图",
-                    "透视纵深布局", "对称仪式感构图"
-                ],
-                moods: ["食欲爆炸", "视觉冲击", "高级质感", "强转化率", "吸睛引流", "温暖治愈", "奢华精致", "烟火气息", "清新自然",
-                    "炫酷科技", "信任权威", "年轻活力", "优雅知性", "神秘高端", "热血沸腾", "冷静专业"
-                ],
-                lighting: ["柔光漫射质感", "侧光立体雕刻", "逆光轮廓光晕", "强对比戏剧光", "顶光聚焦舞台", "环境光沉浸感", "暖色灯光温馨",
-                    "自然散射光通透", "霓虹灯光氛围", "烛光氛围私享", "硬光锐利商业", "蝴蝶光人像级", "环形光均匀"
-                ],
-                marketingTones: ["限时抢购紧迫感", "社交货币分享欲", "身份认同归属感", "稀缺性驱动", "从众效应引导", "权威背书信任",
-                    "情感共鸣触动", "利益点直击", "好奇心缺口", "仪式感营造", "成就感满足", "焦虑解决导向"
-                ]
-            };
-            const ALL_DATA = {
-                posterType: ["餐饮海报", "AI科技海报", "招生课程海报", "企业商务海报", "活动促销海报", "招聘海报", "电商海报", "美业海报",
-                    "房地产海报", "自建房海报", "风水命理海报", "节日节气海报", "短视频封面", "社群裂变海报", "数据战报海报", "城市文旅海报",
-                    "品牌宣传海报", "产品介绍海报", "会员权益海报", "高端极简海报", "国潮海报", "拼贴海报", "渐变科技海报", "潮流视觉海报",
-                    "UI界面风海报", "赛博朋克海报", "复古海报", "杂志风海报", "直播间宣传海报", "插画海报", "C4D海报", "医疗海报",
-                    "医美海报", "健身海报", "汽车海报", "家居海报", "家装海报", "家电海报", "数码产品海报", "珠宝首饰海报", "服装穿搭海报",
-                    "鞋包潮牌海报", "母婴海报", "宠物海报", "教育培训海报", "留学海报", "金融理财海报", "保险海报", "法律咨询海报",
-                    "婚庆海报", "摄影海报", "旅游海报", "民宿酒店海报", "KTV酒吧海报", "夜店派对海报", "茶叶海报", "酒水海报",
-                    "农产品海报", "生鲜水果海报", "超市促销海报", "商场活动海报", "展会海报", "招商加盟海报", "招代理海报", "工厂制造海报",
-                    "工业机械海报", "建材海报", "家具海报", "光伏新能源海报", "AI工具海报", "SaaS软件海报", "APP推广海报", "裂变海报",
-                    "引流海报", "私域海报", "转化成交海报", "秒杀海报", "限时抢购海报", "倒计时海报", "拼团海报", "砍价海报", "预约海报",
-                    "预售海报", "新品发布海报", "爆款推荐海报", "直播预告海报", "直播间福利海报", "直播间贴片海报", "会员充值海报",
-                    "VIP权益海报", "储值海报", "邀请函海报", "打卡海报", "社群海报", "裂变红包海报", "福利领取海报", "渠道招商海报",
-                    "城市合伙人海报", "招募令海报", "课程转化海报", "爆单战报海报", "签单喜报海报", "战绩海报", "数据增长海报", "抖音海报",
-                    "小红书封面", "视频号海报", "快手海报", "B站封面", "公众号首图", "公众号次图", "微信朋友圈海报", "社群长图", "电商主图",
-                    "淘宝海报", "拼多多海报", "京东海报", "亚马逊海报", "Etsy海报", "TikTok海报", "Instagram海报", "Facebook广告图",
-                    "YouTube封面"
-                ],
-                targetUser: ["年轻用户", "女性用户", "高净值用户", "老板", "创业者", "学生", "宝妈", "餐饮用户", "企业客户", "AI从业者",
-                    "设计师", "装修客户", "命理客户", "短视频用户", "小红书用户", "抖音用户"
-                ],
-                styleType: ["极简风", "轻奢风", "高级灰风", "莫兰迪风", "新中式风", "北欧风", "日式风", "韩系风", "ins风", "潮玩风",
-                    "蒸汽波风", "酸性设计风", "液态金属风", "玻璃拟态风", "毛绒风", "卡通风", "手绘风", "插画风", "像素风", "未来科技风",
-                    "朋克风", "暗黑风", "奢侈品风", "苹果风", "UI科技风", "3D立体风", "C4D风", "电影海报风", "游戏风", "二次元风",
-                    "国风水墨风", "敦煌风", "非遗风", "民族风", "泡泡玛特风", "Y2K风", "多巴胺风", "孟菲斯风", "几何风", "弥散渐变风",
-                    "AI未来风", "科技风", "国潮风", "拼贴风", "渐变风", "赛博朋克", "商务风", "电商风", "杂志风", "INS风", "港风",
-                    "美式复古", "潮流街头", "情绪感", "高端黑金", "红金促销", "数据可视化风", "粒子光效风", "手写艺术风", "书法国风",
-                    "新中式", "夜市烟火风", "高端建筑风", "豪宅风", "AI未来感", "爆款短视频封面风"
-                ],
-                colorMatch: ["黑金", "红金", "蓝紫渐变", "莫兰迪", "奶油色", "高级灰", "荧光渐变", "科技蓝", "中国红", "国潮橙", "赛博紫",
-                    "苹果极简白", "暗黑高级灰", "金属银", "深蓝商务", "马卡龙", "夜景霓虹"
-                ],
-                festival: ["春节海报", "元宵海报", "情人节海报", "女神节海报", "清明海报", "劳动节海报", "青年节海报", "母亲节海报",
-                    "儿童节海报", "父亲节海报", "七夕海报", "中秋海报", "国庆海报", "双十一海报", "双十二海报", "圣诞海报", "跨年海报",
-                    "开工大吉海报", "开业大吉海报", "周年庆海报", "节气海报（24节气）"
-                ],
-                moodAtmo: ["高端氛围海报", "情绪文案海报", "孤独感海报", "治愈系海报", "热血海报", "励志海报", "焦虑感海报", "松弛感海报",
-                    "禅意海报", "高级感海报", "神秘感海报", "未来感海报", "氛围感海报", "艺术展览风海报"
-                ],
-                highEnd: ["奢侈品海报", "艺术展海报", "拍卖会海报", "高端会所海报", "企业峰会海报", "高端论坛海报", "发布会海报", "时装秀海报",
-                    "品牌联名海报", "IPO庆典海报", "企业文化海报"
-                ]
-            };
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <!-- 左列 -->
+      <div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapsePosterType">
+            <span class="arrow-icon">▶</span> 🎨 海报类型
+            <span class="badge-count">可选</span>
+            <span class="scroll-hint">🖱️ 滑动查看更多</span>
+          </div>
+          <div class="collapse-content" id="collapsePosterType">
+            <div class="scrollable-btn-area">
+              <div class="btn-grid" data-group="posterType"></div>
+            </div>
+          </div>
+        </div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapseFestival">
+            <span class="arrow-icon">▶</span> 🎊 节日节气 <span class="badge-count">可选</span>
+          </div>
+          <div class="collapse-content" id="collapseFestival">
+            <div class="btn-grid" data-group="festival"></div>
+          </div>
+        </div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapseMoodAtmo">
+            <span class="arrow-icon">▶</span> 💫 情绪氛围 <span class="badge-count">可选</span>
+          </div>
+          <div class="collapse-content" id="collapseMoodAtmo">
+            <div class="btn-grid" data-group="moodAtmo"></div>
+          </div>
+        </div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapseHighEnd">
+            <span class="arrow-icon">▶</span> 💎 高端商业 <span class="badge-count">可选</span>
+          </div>
+          <div class="collapse-content" id="collapseHighEnd">
+            <div class="btn-grid" data-group="highEnd"></div>
+          </div>
+        </div>
+      </div>
+      <!-- 右列 -->
+      <div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapseTargetUser">
+            <span class="arrow-icon">▶</span> 👤 目标用户 <span class="badge-count">可选</span>
+          </div>
+          <div class="collapse-content" id="collapseTargetUser">
+            <div class="btn-grid" data-group="targetUser"></div>
+          </div>
+        </div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapseStyleType">
+            <span class="arrow-icon">▶</span> 🎭 风格类型
+            <span class="badge-count">可选</span>
+            <span class="scroll-hint">🖱️ 滑动查看更多</span>
+          </div>
+          <div class="collapse-content" id="collapseStyleType">
+            <div class="scrollable-btn-area">
+              <div class="btn-grid" data-group="styleType"></div>
+            </div>
+          </div>
+        </div>
+        <div class="main-card">
+          <div class="collapse-toggle" data-target="collapseColorMatch">
+            <span class="arrow-icon">▶</span> 🎨 颜色匹配
+            <span class="badge-count">可选</span>
+            <span class="scroll-hint">🖱️ 滑动查看更多</span>
+          </div>
+          <div class="collapse-content" id="collapseColorMatch">
+            <div class="scrollable-btn-area">
+              <div class="btn-grid" data-group="colorMatch"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            function shuffleArray(arr) { const s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j =
-                    Math.floor(Math.random() * (i + 1));
-                    [s[i], s[j]] = [s[j], s[i]]; } return s; }
+    <div class="generate-btn-wrap">
+      <button class="generate-btn" id="generateBtn" onclick="window.generatePrompts()">
+        ⚡ 生成20组国际级商业海报提示词
+      </button>
+    </div>
+    <div class="stats-bar" id="statsBar">👆 所有选择均可留空，留空则不输出该维度信息</div>
+    <div class="results-grid" id="resultsBox">
+      <div class="empty-state">👆 输入海报需求与主标题，选择条件（可选），点击按钮生成20组不重复提示词</div>
+    </div>
+  </div>
 
-            function pickRandom(arr) { return arr.length ? arr[Math.floor(Math.random() * arr.length)] : ''; }
+  <script>
+    (function() {
+      'use strict';
+      const LIB = {
+        layouts: ["中心爆点构图", "对角线动态构图", "杂志封面版式", "拼贴解构布局", "极简留白美学", "卡片层级排版", "黄金分割比例", "视觉焦点爆破", "三分法经典", "环形聚焦构图", "Z型视觉动线", "F型阅读布局", "悬浮层级构图", "透视纵深布局", "对称仪式感构图"],
+        moods: ["食欲爆炸", "视觉冲击", "高级质感", "强转化率", "吸睛引流", "温暖治愈", "奢华精致", "烟火气息", "清新自然", "炫酷科技", "信任权威", "年轻活力", "优雅知性", "神秘高端", "热血沸腾", "冷静专业"],
+        lighting: ["柔光漫射质感", "侧光立体雕刻", "逆光轮廓光晕", "强对比戏剧光", "顶光聚焦舞台", "环境光沉浸感", "暖色灯光温馨", "自然散射光通透", "霓虹灯光氛围", "烛光氛围私享", "硬光锐利商业", "蝴蝶光人像级", "环形光均匀"],
+        marketingTones: ["限时抢购紧迫感", "社交货币分享欲", "身份认同归属感", "稀缺性驱动", "从众效应引导", "权威背书信任", "情感共鸣触动", "利益点直击", "好奇心缺口", "仪式感营造", "成就感满足", "焦虑解决导向"]
+      };
 
-            function getSelectedValues(groupName) {
-                const btns = document.querySelectorAll(`.btn-grid[data-group="${groupName}"] .tag-btn.selected`);
-                return Array.from(btns).map(b => b.getAttribute('data-val'));
+      const ALL_DATA = {
+        posterType: ["餐饮海报", "AI科技海报", "招生课程海报", "企业商务海报", "活动促销海报", "招聘海报", "电商海报", "美业海报", "房地产海报", "自建房海报", "风水命理海报", "节日节气海报", "短视频封面", "社群裂变海报", "数据战报海报", "城市文旅海报", "品牌宣传海报", "产品介绍海报", "会员权益海报", "高端极简海报", "国潮海报", "拼贴海报", "渐变科技海报", "潮流视觉海报", "UI界面风海报", "赛博朋克海报", "复古海报", "杂志风海报", "直播间宣传海报", "插画海报", "C4D海报", "医疗海报", "医美海报", "健身海报", "汽车海报", "家居海报", "家装海报", "家电海报", "数码产品海报", "珠宝首饰海报", "服装穿搭海报", "鞋包潮牌海报", "母婴海报", "宠物海报", "教育培训海报", "留学海报", "金融理财海报", "保险海报", "法律咨询海报", "婚庆海报", "摄影海报", "旅游海报", "民宿酒店海报", "KTV酒吧海报", "夜店派对海报", "茶叶海报", "酒水海报", "农产品海报", "生鲜水果海报", "超市促销海报", "商场活动海报", "展会海报", "招商加盟海报", "招代理海报", "工厂制造海报", "工业机械海报", "建材海报", "家具海报", "光伏新能源海报", "AI工具海报", "SaaS软件海报", "APP推广海报", "裂变海报", "引流海报", "私域海报", "转化成交海报", "秒杀海报", "限时抢购海报", "倒计时海报", "拼团海报", "砍价海报", "预约海报", "预售海报", "新品发布海报", "爆款推荐海报", "直播预告海报", "直播间福利海报", "直播间贴片海报", "会员充值海报", "VIP权益海报", "储值海报", "邀请函海报", "打卡海报", "社群海报", "裂变红包海报", "福利领取海报", "渠道招商海报", "城市合伙人海报", "招募令海报", "课程转化海报", "爆单战报海报", "签单喜报海报", "战绩海报", "数据增长海报", "抖音海报", "小红书封面", "视频号海报", "快手海报", "B站封面", "公众号首图", "公众号次图", "微信朋友圈海报", "社群长图", "电商主图", "淘宝海报", "拼多多海报", "京东海报", "亚马逊海报", "Etsy海报", "TikTok海报", "Instagram海报", "Facebook广告图", "YouTube封面"],
+        targetUser: ["年轻用户", "女性用户", "高净值用户", "老板", "创业者", "学生", "宝妈", "餐饮用户", "企业客户", "AI从业者", "设计师", "装修客户", "命理客户", "短视频用户", "小红书用户", "抖音用户"],
+        styleType: ["极简风", "轻奢风", "高级灰风", "莫兰迪风", "新中式风", "北欧风", "日式风", "韩系风", "ins风", "潮玩风", "蒸汽波风", "酸性设计风", "液态金属风", "玻璃拟态风", "毛绒风", "卡通风", "手绘风", "插画风", "像素风", "未来科技风", "朋克风", "暗黑风", "奢侈品风", "苹果风", "UI科技风", "3D立体风", "C4D风", "电影海报风", "游戏风", "二次元风", "国风水墨风", "敦煌风", "非遗风", "民族风", "泡泡玛特风", "Y2K风", "多巴胺风", "孟菲斯风", "几何风", "弥散渐变风", "AI未来风", "科技风", "国潮风", "拼贴风", "渐变风", "赛博朋克", "商务风", "电商风", "杂志风", "INS风", "港风", "美式复古", "潮流街头", "情绪感", "高端黑金", "红金促销", "数据可视化风", "粒子光效风", "手写艺术风", "书法国风", "新中式", "夜市烟火风", "高端建筑风", "豪宅风", "AI未来感", "爆款短视频封面风"],
+        colorMatch: [
+          "曜石黑", "哑光黑", "钢琴黑", "碳黑", "深空黑", "亮黑", "石墨黑", "黑曜黑", "暗夜黑",
+          "纯白", "奶白", "米白", "象牙白", "珍珠白", "云朵白", "月光白", "高级灰白", "冷白", "暖白",
+          "浅灰", "中灰", "深灰", "银灰", "水泥灰", "高级灰", "雾霾灰", "科技灰", "金属灰", "枪灰",
+          "中国红", "正红", "深红", "酒红", "枣红", "朱红", "绯红", "暗红", "砖红", "血红", "法拉利红", "爱马仕红", "复古红", "丝绒红", "玫瑰红", "樱桃红", "珊瑚红", "番茄红",
+          "深海蓝", "宝石蓝", "天空蓝", "湖蓝", "冰川蓝", "藏青蓝", "星空蓝", "克莱因蓝", "电光蓝", "牛仔蓝", "AI科技蓝", "未来蓝", "赛博蓝", "数据蓝", "荧光蓝", "霓虹蓝",
+          "翡翠绿", "墨绿", "森林绿", "薄荷绿", "牛油果绿", "青绿", "松石绿", "抹茶绿", "荧光绿", "军绿色", "祖母绿", "青柠绿",
+          "明黄", "柠檬黄", "奶油黄", "香槟黄", "土豪金黄", "琥珀黄", "向日葵黄", "芒果黄", "金黄", "暖黄",
+          "活力橙", "日落橙", "蜜桃橙", "胡萝卜橙", "南瓜橙", "珊瑚橙", "熔岩橙", "夕阳橙",
+          "深紫", "葡萄紫", "香芋紫", "星空紫", "梦幻紫", "薰衣草紫", "赛博紫", "电光紫", "暗夜紫",
+          "少女粉", "樱花粉", "蜜桃粉", "奶粉色", "豆沙粉", "玫瑰粉", "裸粉", "荧光粉", "珊瑚粉",
+          "巧克力棕", "焦糖棕", "原木棕", "咖啡棕", "深棕", "浅棕", "胡桃木色", "可可棕",
+          "香槟金", "土豪金", "玫瑰金", "铂金", "银色", "镜面银", "拉丝银", "金属铜", "青铜色", "钛金色",
+          "莫兰迪灰蓝", "莫兰迪粉", "莫兰迪绿", "莫兰迪紫", "莫兰迪奶咖", "莫兰迪米白", "莫兰迪浅灰",
+          "故宫红", "青花蓝", "水墨黑", "竹青色", "胭脂红", "琉璃金", "汉玉白", "唐风朱砂", "青铜绿",
+          "赛博朋克", "机械银", "AI蓝紫", "全息渐变", "数字荧光", "电流蓝", "激光紫", "未来金属灰",
+          "霓虹粉", "霓虹蓝", "霓虹紫", "霓虹绿", "激光红", "电流青", "荧光黄",
+          "暗黑金", "暗黑红", "暗黑紫", "暗黑蓝", "暗黑灰", "黑武士风", "夜店黑金", "哑光黑银",
+          "马卡龙粉", "马卡龙蓝", "马卡龙绿", "奶油色", "牛奶白", "天空浅蓝", "治愈绿", "清新薄荷",
+          "黑灰渐变", "蓝色渐变", "红色渐变", "紫色渐变", "粉色渐变", "金色渐变", "高级渐变", "蓝紫渐变", "紫粉渐变", "红橙渐变", "金黑渐变", "青蓝渐变", "日落渐变", "极光渐变", "银河渐变",
+          "黑金", "红金", "莫兰迪", "荧光渐变", "苹果极简白", "夜景霓虹"
+        ],
+        festival: ["春节海报", "元宵海报", "情人节海报", "女神节海报", "清明海报", "劳动节海报", "青年节海报", "母亲节海报", "儿童节海报", "父亲节海报", "七夕海报", "中秋海报", "国庆海报", "双十一海报", "双十二海报", "圣诞海报", "跨年海报", "开工大吉海报", "开业大吉海报", "周年庆海报", "节气海报（24节气）"],
+        moodAtmo: ["高端氛围海报", "情绪文案海报", "孤独感海报", "治愈系海报", "热血海报", "励志海报", "焦虑感海报", "松弛感海报", "禅意海报", "高级感海报", "神秘感海报", "未来感海报", "氛围感海报", "艺术展览风海报"],
+        highEnd: ["奢侈品海报", "艺术展海报", "拍卖会海报", "高端会所海报", "企业峰会海报", "高端论坛海报", "发布会海报", "时装秀海报", "品牌联名海报", "IPO庆典海报", "企业文化海报"]
+      };
+
+      function shuffleArray(arr) { const s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
+      function pickRandom(arr) { return arr.length ? arr[Math.floor(Math.random() * arr.length)] : ''; }
+      function getSelectedValues(groupName) {
+        const btns = document.querySelectorAll(`.btn-grid[data-group="${groupName}"] .tag-btn.selected`);
+        return Array.from(btns).map(b => b.getAttribute('data-val'));
+      }
+
+      function generateUniqueCombinations() {
+        const groups = ['posterType', 'targetUser', 'styleType', 'colorMatch', 'festival', 'moodAtmo', 'highEnd'];
+        const selected = {};
+        groups.forEach(g => { const vals = getSelectedValues(g); selected[g] = vals.length > 0 ? vals : []; });
+        const targetCount = 20;
+        const combos = [];
+        const usedKeys = new Set();
+        let attempts = 0;
+        const maxAttempts = 60000;
+        const shLayouts = shuffleArray(LIB.layouts);
+        const shMoods = shuffleArray(LIB.moods);
+        const shLight = shuffleArray(LIB.lighting);
+        const shMarket = shuffleArray(LIB.marketingTones);
+        while (combos.length < targetCount && attempts < maxAttempts) {
+          attempts++;
+          const c = {
+            posterType: pickRandom(selected.posterType),
+            targetUser: pickRandom(selected.targetUser),
+            style: pickRandom(selected.styleType),
+            color: pickRandom(selected.colorMatch),
+            festival: pickRandom(selected.festival),
+            moodAtmo: pickRandom(selected.moodAtmo),
+            highEnd: pickRandom(selected.highEnd),
+            layout: pickRandom(shLayouts),
+            mood: pickRandom(shMoods),
+            lighting: pickRandom(shLight),
+            marketing: pickRandom(shMarket)
+          };
+          const key = `${c.posterType}|${c.targetUser}|${c.style}|${c.color}|${c.festival}|${c.moodAtmo}|${c.highEnd}|${c.layout}|${c.mood}|${c.lighting}|${c.marketing}`;
+          if (!usedKeys.has(key)) { usedKeys.add(key); combos.push(c); }
+        }
+        return combos.slice(0, targetCount);
+      }
+
+      function buildPromptText(postReq, mainTitle, extraInfo, combo, idx) {
+        let p = `【国际商业海报 · 提示词 #${idx + 1}】\n\n`;
+        p += `━━━━━━━━━━━━━━━━━━━━\n`;
+        if (combo.posterType) p += `📌 海报类型：${combo.posterType}\n`;
+        p += `🎯 海报需求：${postReq || '未指定'}`;
+        if (mainTitle) p += `\n📝 主标题文字：${mainTitle}`;
+        if (combo.targetUser) p += `\n👤 目标用户：${combo.targetUser}`;
+        if (combo.style) p += `\n🎨 视觉风格：${combo.style}`;
+        if (combo.color) p += `\n🌈 色彩方案：${combo.color}`;
+        p += `\n📐 构图方式：${combo.layout}`;
+        p += `\n💡 光影效果：${combo.lighting}`;
+        p += `\n✨ 情绪调性：${combo.mood}`;
+        p += `\n🧠 营销逻辑：${combo.marketing}`;
+        if (combo.festival) p += `\n🎊 节日节气：${combo.festival}`;
+        if (combo.moodAtmo) p += `\n💫 情绪氛围：${combo.moodAtmo}`;
+        if (combo.highEnd) p += `\n💎 高端商业：${combo.highEnd}`;
+        if (extraInfo) p += `\n📋 额外信息：${extraInfo}`;
+        p += `\n\n【国际级商业视觉标准】\n`;
+        p += `• 品牌思维：信息层级清晰，品牌符号自然融入\n`;
+        p += `• 输出规格：8K超高清、商业级精修、适配多平台裁剪\n`;
+        p += `• 禁止：低端审美、廉价配色、杂乱排版、普通化设计`;
+        return p;
+      }
+
+      function escapeHtml(t) { const m = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }; return t.replace(/[&<>"']/g, c => m[c]); }
+      function escapeAttr(t) { return t.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+      function renderButtons() {
+        Object.keys(ALL_DATA).forEach(group => {
+          const container = document.querySelector(`.btn-grid[data-group="${group}"]`);
+          if (!container) return;
+          container.innerHTML = '';
+          const uniqueVals = [...new Set(ALL_DATA[group])];
+          uniqueVals.forEach(val => {
+            const btn = document.createElement('button');
+            btn.className = 'tag-btn';
+            btn.setAttribute('data-val', val);
+            btn.textContent = val;
+            btn.addEventListener('click', function() { this.classList.toggle('selected'); });
+            container.appendChild(btn);
+          });
+        });
+      }
+
+      function initCollapse() {
+        document.querySelectorAll('.collapse-toggle').forEach(toggle => {
+          toggle.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            if (!targetId) return;
+            const content = document.getElementById(targetId);
+            if (!content) return;
+            const isOpen = content.classList.contains('expanded');
+            if (isOpen) {
+              content.classList.remove('expanded');
+              this.classList.remove('open');
+            } else {
+              content.classList.add('expanded');
+              this.classList.add('open');
             }
+          });
+        });
+      }
 
-            function generateUniqueCombinations() {
-                const groups = ['posterType', 'targetUser', 'styleType', 'colorMatch', 'festival', 'moodAtmo',
-                'highEnd'];
-                const selected = {};
-                groups.forEach(g => {
-                    const vals = getSelectedValues(g);
-                    selected[g] = vals.length > 0 ? vals : [];
-                });
-                const targetCount = 20;
-                const combos = [];
-                const usedKeys = new Set();
-                let attempts = 0;
-                const maxAttempts = 60000;
-                const shLayouts = shuffleArray(LIB.layouts);
-                const shMoods = shuffleArray(LIB.moods);
-                const shLight = shuffleArray(LIB.lighting);
-                const shMarket = shuffleArray(LIB.marketingTones);
-                while (combos.length < targetCount && attempts < maxAttempts) {
-                    attempts++;
-                    const c = {
-                        posterType: pickRandom(selected.posterType),
-                        targetUser: pickRandom(selected.targetUser),
-                        style: pickRandom(selected.styleType),
-                        color: pickRandom(selected.colorMatch),
-                        festival: pickRandom(selected.festival),
-                        moodAtmo: pickRandom(selected.moodAtmo),
-                        highEnd: pickRandom(selected.highEnd),
-                        layout: pickRandom(shLayouts),
-                        mood: pickRandom(shMoods),
-                        lighting: pickRandom(shLight),
-                        marketing: pickRandom(shMarket)
-                    };
-                    const key =
-                        `${c.posterType}|${c.targetUser}|${c.style}|${c.color}|${c.festival}|${c.moodAtmo}|${c.highEnd}|${c.layout}|${c.mood}|${c.lighting}|${c.marketing}`;
-                    if (!usedKeys.has(key)) { usedKeys.add(key);
-                        combos.push(c); }
-                }
-                return combos.slice(0, targetCount);
+      function generatePrompts() {
+        const postReq = document.getElementById('topicInput').value.trim();
+        const mainTitle = document.getElementById('brandInput').value.trim();
+        const extraInfo = document.getElementById('extraInput').value.trim();
+        const btn = document.getElementById('generateBtn');
+        btn.disabled = true;
+        btn.textContent = '⏳ 生成中...';
+        document.getElementById('resultsBox').innerHTML = '<div class="empty-state">⏳ 正在生成20组国际级商业海报提示词...</div>';
+        setTimeout(() => {
+          try {
+            const combos = generateUniqueCombinations();
+            const prompts = combos.map((c, i) => buildPromptText(postReq, mainTitle, extraInfo, c, i));
+            let finalPrompts = [...new Set(prompts)];
+            while (finalPrompts.length < 20) {
+              const ec = generateUniqueCombinations()[0];
+              const ep = buildPromptText(postReq, mainTitle, extraInfo, ec, finalPrompts.length);
+              if (!finalPrompts.includes(ep)) finalPrompts.push(ep);
             }
-
-            function buildPromptText(postReq, mainTitle, extraInfo, combo, idx) {
-                let p = `【国际商业海报 · 提示词 #${idx + 1}】\n\n`;
-                p += `━━━━━━━━━━━━━━━━━━━━\n`;
-                if (combo.posterType) p += `📌 海报类型：${combo.posterType}\n`;
-                p += `🎯 海报需求：${postReq || '未指定'}`;
-                if (mainTitle) p += `\n📝 主标题文字：${mainTitle}`;
-                if (combo.targetUser) p += `\n👤 目标用户：${combo.targetUser}`;
-                if (combo.style) p += `\n🎨 视觉风格：${combo.style}`;
-                if (combo.color) p += `\n🌈 色彩方案：${combo.color}`;
-                p += `\n📐 构图方式：${combo.layout}`;
-                p += `\n💡 光影效果：${combo.lighting}`;
-                p += `\n✨ 情绪调性：${combo.mood}`;
-                p += `\n🧠 营销逻辑：${combo.marketing}`;
-                if (combo.festival) p += `\n🎊 节日节气：${combo.festival}`;
-                if (combo.moodAtmo) p += `\n💫 情绪氛围：${combo.moodAtmo}`;
-                if (combo.highEnd) p += `\n💎 高端商业：${combo.highEnd}`;
-                if (extraInfo) p += `\n📋 额外信息：${extraInfo}`;
-                p += `\n\n【国际级商业视觉标准】\n`;
-                p += `• 品牌思维：信息层级清晰，品牌符号自然融入\n`;
-                p += `• 输出规格：8K超高清、商业级精修、适配多平台裁剪\n`;
-                p += `• 禁止：低端审美、廉价配色、杂乱排版、普通化设计`;
-                return p;
-            }
-
-            function escapeHtml(t) { const m = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }; return t
-                    .replace(/[&<>"']/g, c => m[c]); }
-
-            function escapeAttr(t) { return t.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
-            function renderButtons() {
-                Object.keys(ALL_DATA).forEach(group => {
-                    const container = document.querySelector(`.btn-grid[data-group="${group}"]`);
-                    if (!container) return;
-                    container.innerHTML = '';
-                    const uniqueVals = [...new Set(ALL_DATA[group])];
-                    uniqueVals.forEach(val => {
-                        const btn = document.createElement('button');
-                        btn.className = 'tag-btn';
-                        btn.setAttribute('data-val', val);
-                        btn.textContent = val;
-                        btn.addEventListener('click', function() { this.classList.toggle(
-                            'selected'); });
-                        container.appendChild(btn);
-                    });
-                });
-            }
-
-            function initCollapse() {
-                document.querySelectorAll('.collapse-toggle').forEach(toggle => {
-                    toggle.addEventListener('click', function() {
-                        const targetId = this.getAttribute('data-target');
-                        if (!targetId) return;
-                        const content = document.getElementById(targetId);
-                        if (!content) return;
-                        const isOpen = content.classList.contains('expanded');
-                        if (isOpen) {
-                            content.classList.remove('expanded');
-                            this.classList.remove('open');
-                        } else {
-                            content.classList.add('expanded');
-                            this.classList.add('open');
-                        }
-                    });
-                });
-            }
-
-            function generatePrompts() {
-                const postReq = document.getElementById('topicInput').value.trim();
-                const mainTitle = document.getElementById('brandInput').value.trim();
-                const extraInfo = document.getElementById('extraInput').value.trim();
-                const btn = document.getElementById('generateBtn');
-                btn.disabled = true;
-                btn.textContent = '⏳ 生成中...';
-                document.getElementById('resultsBox').innerHTML =
-                    '<div class="empty-state">⏳ 正在生成20组国际级商业海报提示词...</div>';
-                setTimeout(() => {
-                    try {
-                        const combos = generateUniqueCombinations();
-                        const prompts = combos.map((c, i) => buildPromptText(postReq, mainTitle,
-                            extraInfo, c, i));
-                        let finalPrompts = [...new Set(prompts)];
-                        while (finalPrompts.length < 20) {
-                            const ec = generateUniqueCombinations()[0];
-                            const ep = buildPromptText(postReq, mainTitle, extraInfo, ec, finalPrompts
-                                .length);
-                            if (!finalPrompts.includes(ep)) finalPrompts.push(ep);
-                        }
-                        finalPrompts = finalPrompts.slice(0, 20);
-                        const box = document.getElementById('resultsBox');
-                        box.innerHTML = '';
-                        finalPrompts.forEach((pt, i) => {
-                            const div = document.createElement('div');
-                            div.className = 'item';
-                            div.innerHTML =
-                                `<div class="item-header"><div class="item-number">${i+1}</div><span class="unique-badge">✦ 国际商业标准</span></div><div class="prompt-text">${escapeHtml(pt)}</div><button class="copy-btn" data-prompt="${escapeAttr(pt)}">📋 复制提示词</button>`;
-                            div.querySelector('.copy-btn').addEventListener('click', function() {
-                                const t = this.getAttribute('data-prompt');
-                                navigator.clipboard.writeText(t).then(() => { this
-                                        .innerHTML = '✅ 已复制';
-                                    this.classList.add('copied');
-                                    setTimeout(() => { this.innerHTML =
-                                            '📋 复制提示词';
-                                        this.classList.remove('copied'); }, 2000); })
-                                    .catch(() => { const ta = document.createElement(
-                                            'textarea');
-                                        ta.value = t;
-                                        document.body.appendChild(ta);
-                                        ta.select();
-                                        document.execCommand('copy');
-                                        document.body.removeChild(ta);
-                                        this.innerHTML = '✅ 已复制';
-                                        this.classList.add('copied');
-                                        setTimeout(() => { this.innerHTML =
-                                                '📋 复制提示词';
-                                            this.classList.remove('copied'); },
-                                            2000); });
-                            });
-                            box.appendChild(div);
-                        });
-                        const selectedCount = ['posterType','targetUser','styleType','colorMatch','festival','moodAtmo','highEnd'].reduce((acc,g)=>acc+getSelectedValues(g).length,0);
-                        document.getElementById('statsBar').innerHTML =
-                            `✅ 生成 <strong>${finalPrompts.length}</strong> 组提示词 | 已选维度：<strong>${selectedCount}</strong> 个 | 未选维度留空不输出`;
-                    } catch (e) { console.error(e);
-                        document.getElementById('resultsBox').innerHTML =
-                            '<div class="empty-state">❌ 生成失败，请刷新重试</div>'; } finally { btn.disabled =
-                            false;
-                        btn.innerHTML = '⚡ 生成20组国际级商业海报提示词'; }
-                }, 100);
-            }
-
-            window.addEventListener('DOMContentLoaded', () => {
-                renderButtons();
-                initCollapse();
-                generatePrompts();
+            finalPrompts = finalPrompts.slice(0, 20);
+            const box = document.getElementById('resultsBox');
+            box.innerHTML = '';
+            finalPrompts.forEach((pt, i) => {
+              const div = document.createElement('div');
+              div.className = 'item';
+              div.innerHTML = `<div class="item-header"><div class="item-number">${i+1}</div><span class="unique-badge">✦ 国际商业标准</span></div><div class="prompt-text">${escapeHtml(pt)}</div><button class="copy-btn" data-prompt="${escapeAttr(pt)}">📋 复制提示词</button>`;
+              div.querySelector('.copy-btn').addEventListener('click', function() {
+                const t = this.getAttribute('data-prompt');
+                navigator.clipboard.writeText(t).then(() => { this.innerHTML = '✅ 已复制'; this.classList.add('copied'); setTimeout(() => { this.innerHTML = '📋 复制提示词'; this.classList.remove('copied'); }, 2000); }).catch(() => { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); this.innerHTML = '✅ 已复制'; this.classList.add('copied'); setTimeout(() => { this.innerHTML = '📋 复制提示词'; this.classList.remove('copied'); }, 2000); });
+              });
+              box.appendChild(div);
             });
-            window.generatePrompts = generatePrompts;
-        })();
-    </script>
+            const selectedCount = ['posterType','targetUser','styleType','colorMatch','festival','moodAtmo','highEnd'].reduce((acc,g)=>acc+getSelectedValues(g).length,0);
+            document.getElementById('statsBar').innerHTML = `✅ 生成 <strong>${finalPrompts.length}</strong> 组提示词 | 已选维度：<strong>${selectedCount}</strong> 个 | 未选维度留空不输出`;
+          } catch (e) { console.error(e); document.getElementById('resultsBox').innerHTML = '<div class="empty-state">❌ 生成失败，请刷新重试</div>'; } finally { btn.disabled = false; btn.innerHTML = '⚡ 生成20组国际级商业海报提示词'; }
+        }, 100);
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        renderButtons();
+        initCollapse();
+        generatePrompts();
+      });
+      window.generatePrompts = generatePrompts;
+    })();
+  </script>
 </body>
 </html>
